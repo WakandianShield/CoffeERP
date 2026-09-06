@@ -1,0 +1,162 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Estados Financieros</h1>
+    <div class="export-actions">
+      <button class="btn-outline" (click)="exportPdf()">
+        <span class="material-icons-outlined">picture_as_pdf</span>
+        Exportar PDF
+      </button>
+      <button class="btn-outline" (click)="exportExcel()">
+        <span class="material-icons-outlined">table_chart</span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="fechaInicio">Fecha Inicio</label>
+      <input
+        type="date"
+        id="fechaInicio"
+        [value]="fechaInicio()"
+        (input)="fechaInicio.set($any($event.target).value)"
+      />
+    </div>
+    <div class="filter-group">
+      <label for="fechaFin">Fecha Fin</label>
+      <input
+        type="date"
+        id="fechaFin"
+        [value]="fechaFin()"
+        (input)="fechaFin.set($any($event.target).value)"
+      />
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Balance General</h2>
+      <span class="period-badge">Al {{ fechaFin() }}</span>
+    </div>
+    <div class="balance-grid">
+      <div class="balance-column">
+        <div class="column-header activo-header">Activo</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of activos(); track item.concepto) {
+              <tr>
+                <td>{{ item.concepto }}</td>
+                <td class="currency">{{ formatCurrency(item.monto) }}</td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td>Total Activo</td>
+              <td class="currency">{{ formatCurrency(totalActivos()) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="balance-column">
+        <div class="column-header pasivo-header">Pasivo y Capital</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of pasivos(); track item.concepto) {
+              <tr>
+                <td>{{ item.concepto }}</td>
+                <td class="currency">{{ formatCurrency(item.monto) }}</td>
+              </tr>
+            }
+            
+            @for (item of capital(); track item.concepto) {
+              <tr>
+                <td>{{ item.concepto }}</td>
+                <td class="currency">{{ formatCurrency(item.monto) }}</td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+            <tr class="subtotal-row">
+              <td>Total Pasivo</td>
+              <td class="currency">{{ formatCurrency(totalPasivos()) }}</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Total Capital</td>
+              <td class="currency">{{ formatCurrency(totalCapital()) }}</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total Pasivo + Capital</td>
+              <td class="currency">{{ formatCurrency(totalPasivoCapital()) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Estado de Resultados</h2>
+      <span class="period-badge">Del {{ fechaInicio() }} al {{ fechaFin() }}</span>
+    </div>
+    <table class="resultados-table">
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Monto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ventas Netas</td>
+          <td class="currency">{{ formatCurrency(ventasNetas()) }}</td>
+        </tr>
+        <tr>
+          <td>Costo de Ventas</td>
+          <td class="currency negative">({{ formatCurrency(costoVentas()) }})</td>
+        </tr>
+        <tr class="subtotal-row">
+          <td>Utilidad Bruta</td>
+          <td class="currency">{{ formatCurrency(utilidadBruta()) }}</td>
+        </tr>
+        <tr>
+          <td>Gastos de Administración</td>
+          <td class="currency negative">({{ formatCurrency(gastosAdministracion()) }})</td>
+        </tr>
+        <tr>
+          <td>Gastos de Venta</td>
+          <td class="currency negative">({{ formatCurrency(gastosVenta()) }})</td>
+        </tr>
+        <tr class="subtotal-row">
+          <td>Utilidad Operativa</td>
+          <td class="currency">{{ formatCurrency(utilidadOperativa()) }}</td>
+        </tr>
+        <tr>
+          <td>Impuestos</td>
+          <td class="currency negative">({{ formatCurrency(impuestos()) }})</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>Utilidad Neta</td>
+          <td class="currency success">{{ formatCurrency(utilidadNeta()) }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Cuentas por Cobrar y Pagar</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nuevo Registro
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab() === 'cobrar'" (click)="setTab('cobrar')">
+      <span class="material-icons-outlined">account_balance_wallet</span>
+      Por Cobrar
+    </button>
+    <button class="tab" [class.active]="activeTab() === 'pagar'" (click)="setTab('pagar')">
+      <span class="material-icons-outlined">receipt_long</span>
+      Por Pagar
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>{{ activeTab() === 'cobrar' ? 'Cliente' : 'Proveedor' }}</th>
+          <th>Monto</th>
+          <th>Saldo Pendiente</th>
+          <th>Fecha Vencimiento</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cuenta of filteredCuentas(); track cuenta.id) {
+          <tr>
+            <td>{{ cuenta.id }}</td>
+            <td>{{ cuenta.clienteProveedor }}</td>
+            <td class="currency">{{ formatCurrency(cuenta.monto) }}</td>
+            <td class="currency" [class.pending]="cuenta.saldoPendiente > 0" [class.paid]="cuenta.saldoPendiente === 0">
+              {{ formatCurrency(cuenta.saldoPendiente) }}
+            </td>
+            <td>{{ formatDate(cuenta.fechaVencimiento) }}</td>
+            <td>
+              <span class="status-badge" [class.pendiente]="cuenta.estatus === 'pendiente'" [class.parcial]="cuenta.estatus === 'parcial'" [class.pagada]="cuenta.estatus === 'pagada'">
+                {{ cuenta.estatus }}
+              </span>
+            </td>
+            <td class="actions">
+              <button class="icon-btn danger" title="Eliminar" (click)="deleteCuenta(cuenta.id)">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-state">No hay registros para mostrar</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Nuevo Registro</h2>
+        <button class="icon-btn" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" [value]="formTipo()" (change)="formTipo.set($any($event.target).value)">
+            <option value="cobrar">Por Cobrar</option>
+            <option value="pagar">Por Pagar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="clienteProveedor">{{ formTipo() === 'cobrar' ? 'Cliente' : 'Proveedor' }}</label>
+          <input
+            type="text"
+            id="clienteProveedor"
+            [value]="formClienteProveedor()"
+            (input)="formClienteProveedor.set($any($event.target).value)"
+            placeholder="Ingrese el nombre"
+          />
+          @if (clienteProveedorError()) {
+            <span class="error-text">{{ clienteProveedorError() }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="monto">Monto</label>
+          <input
+            type="number"
+            id="monto"
+            [value]="formMonto()"
+            (input)="formMonto.set(+$any($event.target).value)"
+            placeholder="0.00"
+            step="0.01"
+            min="0"
+          />
+          @if (montoError()) {
+            <span class="error-text">{{ montoError() }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="fechaVencimiento">Fecha de Vencimiento</label>
+          <input
+            type="date"
+            id="fechaVencimiento"
+            [value]="formFechaVencimiento()"
+            (input)="formFechaVencimiento.set($any($event.target).value)"
+          />
+          @if (fechaError()) {
+            <span class="error-text">{{ fechaError() }}</span>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

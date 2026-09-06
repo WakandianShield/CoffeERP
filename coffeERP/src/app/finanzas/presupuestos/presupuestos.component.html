@@ -1,0 +1,117 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Presupuestos</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nuevo Presupuesto
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Área/Proyecto</th>
+          <th>Monto Asignado</th>
+          <th>Monto Ejercido</th>
+          <th>% Ejercido</th>
+          <th>Periodo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (presupuesto of presupuestos(); track presupuesto.id) {
+          <tr>
+            <td>{{ presupuesto.id }}</td>
+            <td>{{ presupuesto.area }}</td>
+            <td class="currency">{{ formatCurrency(presupuesto.montoAsignado) }}</td>
+            <td class="currency">{{ formatCurrency(presupuesto.montoEjercido) }}</td>
+            <td>
+              <div class="progress-cell">
+                <div class="progress-bar-container">
+                  <div
+                    class="progress-bar"
+                    [class.success]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'success'"
+                    [class.warning]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'warning'"
+                    [class.danger]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'danger'"
+                    [style.width.%]="getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)"
+                  ></div>
+                </div>
+                <span class="percentage" [class.success]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'success'" [class.warning]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'warning'" [class.danger]="getColorClass(getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado)) === 'danger'">
+                  {{ getPorcentaje(presupuesto.montoEjercido, presupuesto.montoAsignado) }}%
+                </span>
+              </div>
+            </td>
+            <td>{{ presupuesto.periodo }}</td>
+            <td class="actions">
+              <button class="icon-btn danger" title="Eliminar" (click)="deletePresupuesto(presupuesto.id)">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Nuevo Presupuesto</h2>
+        <button class="icon-btn" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="area">Área o Proyecto</label>
+          <input
+            type="text"
+            id="area"
+            [value]="formArea()"
+            (input)="formArea.set($any($event.target).value)"
+            placeholder="Ingrese el área o proyecto"
+          />
+          @if (areaError()) {
+            <span class="error-text">{{ areaError() }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="montoAsignado">Monto Asignado</label>
+          <input
+            type="number"
+            id="montoAsignado"
+            [value]="formMontoAsignado()"
+            (input)="formMontoAsignado.set(+$any($event.target).value)"
+            placeholder="0.00"
+            step="0.01"
+            min="0"
+          />
+          @if (montoError()) {
+            <span class="error-text">{{ montoError() }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="periodo">Periodo</label>
+          <input
+            type="text"
+            id="periodo"
+            [value]="formPeriodo()"
+            (input)="formPeriodo.set($any($event.target).value)"
+            placeholder="Ej: 2026-Q1"
+          />
+          @if (periodoError()) {
+            <span class="error-text">{{ periodoError() }}</span>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,260 @@
+:host {
+  display: block;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #f5f5f5;
+  margin: 0;
+}
+
+.export-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #a0a0a0;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: #8B6F47;
+  color: #8B6F47;
+}
+
+.btn-outline .material-icons-outlined {
+  font-size: 20px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-group input {
+  padding: 10px 14px;
+  background: #2c2c2c;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #f5f5f5;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.filter-group input:focus {
+  outline: none;
+  border-color: #8B6F47;
+}
+
+.filter-group input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+
+.section-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+
+.period-badge {
+  font-size: 13px;
+  color: #a0a0a0;
+  background: #2c2c2c;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.balance-column {
+  padding: 0;
+}
+
+.balance-column:first-child {
+  border-right: 1px solid #3a3a3a;
+}
+
+.column-header {
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activo-header {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.pasivo-header {
+  background: rgba(66, 165, 245, 0.1);
+  color: #42a5f5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  padding: 12px 24px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b6b6b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+td {
+  padding: 12px 24px;
+  font-size: 14px;
+  color: #f5f5f5;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.currency {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  text-align: right;
+}
+
+.currency.negative {
+  color: #ef5350;
+}
+
+.currency.success {
+  color: #4caf50;
+}
+
+.total-row {
+  background: #212121;
+  font-weight: 600;
+}
+
+.total-row td {
+  padding: 14px 24px;
+  border-bottom: none;
+  color: #f5f5f5;
+  font-size: 15px;
+}
+
+.subtotal-row td {
+  border-bottom: 1px solid #3a3a3a;
+  font-weight: 600;
+  color: #a0a0a0;
+}
+
+.separator-row td {
+  padding: 4px 24px;
+  border-bottom: 1px dashed #3a3a3a;
+  background: rgba(139, 111, 71, 0.05);
+}
+
+.resultados-table thead th {
+  padding: 14px 24px;
+}
+
+.resultados-table tbody td {
+  padding: 14px 24px;
+}
+
+.resultados-table tfoot .total-row td {
+  padding: 16px 24px;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .export-actions {
+    width: 100%;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+  }
+
+  .balance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .balance-column:first-child {
+    border-right: none;
+    border-bottom: 1px solid #3a3a3a;
+  }
+}

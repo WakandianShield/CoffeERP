@@ -1,0 +1,87 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Pedidos por Confirmar</h1>
+  </div>
+
+  <div class="search-bar">
+    <span class="material-icons-outlined search-icon">search</span>
+    <input
+      type="text"
+      placeholder="Buscar por cliente o número de pedido..."
+      [value]="searchQuery()"
+      (input)="searchQuery.set($any($event.target).value)"
+    />
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Pedido</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Método de Pago</th>
+          <th>Total</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pedido of filteredPedidos(); track pedido.orderId) {
+          <tr class="pedido-row" (click)="toggleExpand(pedido.orderId)">
+            <td class="order-id">#{{ pedido.orderId }}</td>
+            <td>{{ pedido.clienteNombre }}</td>
+            <td>{{ formatDate(pedido.fecha) }}</td>
+            <td class="capitalize">{{ pedido.metodoPago }}</td>
+            <td class="currency">{{ formatCurrency(pedido.total) }}</td>
+            <td>
+              <span class="badge badge-pagada">{{ pedido.estatus }}</span>
+            </td>
+            <td class="actions" (click)="$event.stopPropagation()">
+              <button class="confirm-btn" (click)="confirmarEntrega(pedido.orderId)">
+                <span class="material-icons-outlined">check_circle</span>
+                Confirmar Entrega
+              </button>
+            </td>
+          </tr>
+          @if (expandedOrder() === pedido.orderId) {
+            <tr class="expanded-row">
+              <td colspan="7">
+                <div class="order-details">
+                  <div class="details-header">Detalle del Pedido #{{ pedido.orderId }}</div>
+                  <table class="items-table">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (item of pedido.items; track item.id) {
+                        <tr>
+                          <td>{{ item.productoNombre }}</td>
+                          <td>{{ item.cantidad }}</td>
+                          <td class="currency">{{ formatCurrency(item.precioUnitario) }}</td>
+                          <td class="currency">{{ formatCurrency(item.total) }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          }
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-state">
+              <span class="empty-icon material-icons-outlined">local_shipping</span>
+              <p>No hay pedidos pendientes de entrega</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

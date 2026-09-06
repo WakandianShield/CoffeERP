@@ -1,0 +1,237 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Proveedores</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nuevo Proveedor
+    </button>
+  </div>
+
+  <div class="search-bar">
+    <span class="material-icons-outlined search-icon">search</span>
+    <input
+      type="text"
+      placeholder="Buscar proveedores..."
+      [ngModel]="searchTerm()"
+      (ngModelChange)="onSearchChange($event)"
+    />
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Correo</th>
+          <th>RFC</th>
+          <th>Productos</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (proveedor of paginatedProveedores(); track proveedor.id) {
+          <tr>
+            <td>{{ proveedor.id }}</td>
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.telefono }}</td>
+            <td>{{ proveedor.correo }}</td>
+            <td>{{ proveedor.rfc }}</td>
+            <td>{{ proveedor.productos.length }} producto{{ proveedor.productos.length === 1 ? '' : 's' }}</td>
+            <td>
+              <span class="badge" [class.active]="proveedor.activo" [class.inactive]="!proveedor.activo">
+                {{ proveedor.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon" title="Gestionar Productos" (click)="openProductModal(proveedor.id)">
+                  <span class="material-icons-outlined">inventory_2</span>
+                </button>
+                <button class="btn-icon" title="Editar" (click)="openModal(proveedor.id)">
+                  <span class="material-icons-outlined">edit</span>
+                </button>
+                <button class="btn-icon" [class.toggle-off]="!proveedor.activo" title="Cambiar estatus" (click)="toggleActivo(proveedor.id)">
+                  <span class="material-icons-outlined">{{ proveedor.activo ? 'toggle_on' : 'toggle_off' }}</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state">No se encontraron proveedores</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button class="btn-page" [disabled]="currentPage() === 1" (click)="prevPage()">
+      <span class="material-icons-outlined">chevron_left</span>
+    </button>
+    @for (page of getPageNumbers(); track page) {
+      <button class="btn-page" [class.active]="page === currentPage()" (click)="goToPage(page)">{{ page }}</button>
+    }
+    <button class="btn-page" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+      <span class="material-icons-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Proveedor' : 'Nuevo Proveedor' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" [ngModel]="formNombre()" (ngModelChange)="formNombre.set($event)" />
+          @if (errors()['nombre']) {
+            <span class="error">{{ errors()['nombre'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="text" [ngModel]="formTelefono()" (ngModelChange)="formTelefono.set($event)" maxlength="10" />
+          @if (errors()['telefono']) {
+            <span class="error">{{ errors()['telefono'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>Correo *</label>
+          <input type="email" [ngModel]="formCorreo()" (ngModelChange)="formCorreo.set($event)" />
+          @if (errors()['correo']) {
+            <span class="error">{{ errors()['correo'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>RFC *</label>
+          <input type="text" [ngModel]="formRfc()" (ngModelChange)="formRfc.set($event)" maxlength="13" />
+          @if (errors()['rfc']) {
+            <span class="error">{{ errors()['rfc'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>Estatus</label>
+          <select [ngModel]="formActivo()" (ngModelChange)="formActivo.set($event === 'true')">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">{{ editingId() ? 'Guardar Cambios' : 'Crear Proveedor' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showProductModal()) {
+  <div class="modal-overlay" (click)="closeProductModal()">
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Productos de {{ currentProveedorForProducts()?.nombre }}</h2>
+        <button class="btn-close" (click)="closeProductModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        @if (editingProductIndex() === null) {
+          <button class="btn-primary btn-add-product" (click)="startAddProduct()">
+            <span class="material-icons-outlined">add</span>
+            Agregar Producto
+          </button>
+        }
+
+        @if (editingProductIndex() !== null) {
+          <div class="inline-product-form">
+            <h3>{{ editingProductIndex() === -1 ? 'Nuevo Producto' : 'Editar Producto' }}</h3>
+            <div class="form-row">
+              <div class="form-group form-group-half">
+                <label>Nombre del producto *</label>
+                <input type="text" [ngModel]="formProductoNombre()" (ngModelChange)="formProductoNombre.set($event)" placeholder="Ej: Café Arabica Origen" />
+              </div>
+              <div class="form-group form-group-half">
+                <label>Unidad *</label>
+                <select [ngModel]="formProductoUnidad()" (ngModelChange)="formProductoUnidad.set($event)">
+                  <option value="kg">Kilogramos (kg)</option>
+                  <option value="litros">Litros</option>
+                  <option value="piezas">Piezas</option>
+                  <option value="ml">Mililitros (ml)</option>
+                  <option value="g">Gramos (g)</option>
+                  <option value="docenas">Docenas</option>
+                  <option value="cajas">Cajas</option>
+                </select>
+              </div>
+              <div class="form-group form-group-half">
+                <label>Cantidad *</label>
+                <input type="number" [ngModel]="formProductoCantidad()" (ngModelChange)="formProductoCantidad.set($event)" min="1" />
+              </div>
+              <div class="form-group form-group-half">
+                <label>Precio (MXN) *</label>
+                <input type="number" [ngModel]="formProductoPrecio()" (ngModelChange)="formProductoPrecio.set($event)" min="0" step="0.01" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-secondary" (click)="cancelProductForm()">Cancelar</button>
+              <button class="btn-primary" (click)="saveProduct()">Guardar</button>
+            </div>
+          </div>
+        }
+
+        <div class="product-table-container">
+          @if (currentProveedorForProducts()?.productos?.length) {
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Unidad</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (producto of currentProveedorForProducts()!.productos; track $index) {
+                  <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.unidad }}</td>
+                    <td>{{ producto.cantidad }}</td>
+                    <td>{{ producto.precio | currency:'MXN':'symbol':'1.2-2' }}</td>
+                    <td>
+                      <div class="actions">
+                        <button class="btn-icon" title="Editar" (click)="startEditProduct($index, producto)">
+                          <span class="material-icons-outlined">edit</span>
+                        </button>
+                        <button class="btn-icon btn-danger" title="Eliminar" (click)="deleteProduct($index)">
+                          <span class="material-icons-outlined">delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <div class="empty-products">
+              <span class="material-icons-outlined empty-icon">inventory_2</span>
+              <p>No hay productos registrados para este proveedor</p>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeProductModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+}

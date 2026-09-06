@@ -1,0 +1,177 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Órdenes de Compra</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nueva Orden
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Proveedor</th>
+          <th>Solicitante</th>
+          <th>Autorizador</th>
+          <th>Fecha</th>
+          <th>Estatus</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (orden of ordenes(); track orden.id) {
+          <tr>
+            <td>{{ orden.id }}</td>
+            <td>{{ orden.proveedorNombre }}</td>
+            <td>{{ orden.solicitante }}</td>
+            <td>{{ orden.autorizador }}</td>
+            <td>{{ orden.fecha | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="badge" [class]="getEstatusClass(orden.estatus)">
+                {{ orden.estatus | titlecase }}
+              </span>
+            </td>
+            <td class="total-cell">{{ getOrderTotal(orden) | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon" title="Editar" (click)="openModal(orden.id)">
+                  <span class="material-icons-outlined">edit</span>
+                </button>
+                @if (orden.estatus === 'pendiente') {
+                  <button class="btn-icon btn-success" title="Aprobar" (click)="aprobar(orden.id)">
+                    <span class="material-icons-outlined">check_circle</span>
+                  </button>
+                  <button class="btn-icon btn-danger" title="Cancelar" (click)="cancelar(orden.id)">
+                    <span class="material-icons-outlined">cancel</span>
+                  </button>
+                }
+                @if (orden.estatus === 'parcial') {
+                  <button class="btn-icon btn-success" title="Marcar Recibida" (click)="marcarRecibida(orden.id)">
+                    <span class="material-icons-outlined">done_all</span>
+                  </button>
+                  <button class="btn-icon btn-danger" title="Cancelar" (click)="cancelar(orden.id)">
+                    <span class="material-icons-outlined">cancel</span>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state">No hay órdenes de compra registradas</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Orden de Compra' : 'Nueva Orden de Compra' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Proveedor *</label>
+            <select [ngModel]="formProveedorId()" (ngModelChange)="formProveedorId.set($event); onProveedorChange()">
+              @for (prov of activeProveedores(); track prov.id) {
+                <option [value]="prov.id">{{ prov.nombre }}</option>
+              }
+            </select>
+            @if (errors()['proveedor']) {
+              <span class="error">{{ errors()['proveedor'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Solicitante *</label>
+            <select [ngModel]="formSolicitante()" (ngModelChange)="formSolicitante.set($event)">
+              <option value="">Seleccione un solicitante</option>
+              @for (emp of empleados(); track emp) {
+                <option [value]="emp">{{ emp }}</option>
+              }
+            </select>
+            @if (errors()['solicitante']) {
+              <span class="error">{{ errors()['solicitante'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Autorizador *</label>
+          <select [ngModel]="formAutorizador()" (ngModelChange)="formAutorizador.set($event)">
+            <option value="">Seleccione un autorizador</option>
+            @for (emp of empleados(); track emp) {
+              <option [value]="emp" [disabled]="emp === formSolicitante()">{{ emp }}</option>
+            }
+          </select>
+          @if (errors()['autorizador']) {
+            <span class="error">{{ errors()['autorizador'] }}</span>
+          }
+        </div>
+
+        <div class="products-section">
+          <div class="products-header">
+            <h3>Productos</h3>
+            <button class="btn-add" (click)="addRow()">
+              <span class="material-icons-outlined">add</span>
+              Agregar Producto
+            </button>
+          </div>
+          @if (errors()['detalle'] || errors()['valores']) {
+            <span class="error" style="margin-bottom: 12px; display: block;">
+              {{ errors()['detalle'] || errors()['valores'] }}
+            </span>
+          }
+          <div class="product-rows">
+            @for (item of formDetalle(); track $index) {
+              <div class="product-row">
+                <div class="form-group flex-grow">
+                  <label>Producto</label>
+                  <select [ngModel]="item.producto" (ngModelChange)="onProductoChange($index, $event)">
+                    <option value="">Seleccione producto</option>
+                    @for (prod of selectedProducts(); track prod.nombre) {
+                      <option [value]="prod.nombre">{{ prod.nombre }} ({{ prod.cantidad }} {{ prod.unidad }})</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Cantidad</label>
+                  <input type="number" [ngModel]="item.cantidad" (ngModelChange)="updateCantidad($index, $event)" min="1" />
+                </div>
+                <div class="form-group">
+                  <label>Precio Unitario</label>
+                  <div class="subtotal-value">{{ item.precioUnitario | currency:'MXN':'symbol':'1.2-2' }}</div>
+                </div>
+                <div class="form-group">
+                  <label>Subtotal</label>
+                  <div class="subtotal-value">{{ item.cantidad * item.precioUnitario | currency:'MXN':'symbol':'1.2-2' }}</div>
+                </div>
+                @if (formDetalle().length > 1) {
+                  <button class="btn-remove" (click)="removeRow($index)">
+                    <span class="material-icons-outlined">delete</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+          <div class="grand-total">
+            <span>Total:</span>
+            <span class="total-amount">{{ computedTotal() | currency:'MXN':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">{{ editingId() ? 'Guardar Cambios' : 'Crear Orden' }}</button>
+      </div>
+    </div>
+  </div>
+}

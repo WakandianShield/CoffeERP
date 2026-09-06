@@ -1,0 +1,206 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Permisos, Vacaciones e Incapacidades</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nueva Solicitud
+    </button>
+  </div>
+
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="summary-icon pendientes">
+        <span class="material-icons-outlined">hourglass_top</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ permisosPendientes() }}</span>
+        <span class="summary-label">Pendientes</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon aprobados">
+        <span class="material-icons-outlined">check_circle</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ permisosAprobados() }}</span>
+        <span class="summary-label">Aprobados</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon rechazados">
+        <span class="material-icons-outlined">cancel</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ permisosRechazados() }}</span>
+        <span class="summary-label">Rechazados</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab() === 'solicitudes'" (click)="setTab('solicitudes')">
+      <span class="material-icons-outlined">list</span>
+      Solicitudes
+    </button>
+    <button class="tab" [class.active]="activeTab() === 'calendario'" (click)="setTab('calendario')">
+      <span class="material-icons-outlined">calendar_month</span>
+      Calendario
+    </button>
+  </div>
+
+  @if (activeTab() === 'solicitudes') {
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Empleado</th>
+            <th>Tipo</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Días</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (perm of permisos(); track perm.id) {
+            <tr>
+              <td>{{ perm.id }}</td>
+              <td>{{ perm.empleado }}</td>
+              <td>
+                <span class="badge badge-{{ perm.tipo }}">{{ perm.tipo }}</span>
+              </td>
+              <td>{{ perm.fechaInicio }}</td>
+              <td>{{ perm.fechaFin }}</td>
+              <td>{{ perm.dias }}</td>
+              <td>
+                <span class="badge badge-{{ perm.estatus }}">{{ perm.estatus }}</span>
+              </td>
+              <td>
+                <div class="actions">
+                  @if (perm.estatus === 'pendiente') {
+                    <button class="btn-icon btn-success" title="Aprobar" (click)="aprobar(perm.id)">
+                      <span class="material-icons-outlined">check</span>
+                    </button>
+                    <button class="btn-icon btn-danger" title="Rechazar" (click)="rechazar(perm.id)">
+                      <span class="material-icons-outlined">close</span>
+                    </button>
+                  }
+                  <button class="btn-icon" title="Editar" (click)="openModal(perm.id)">
+                    <span class="material-icons-outlined">edit</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-state">No se encontraron solicitudes</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (activeTab() === 'calendario') {
+    <div class="calendar">
+      <div class="calendar-header">
+        <span class="calendar-month">Septiembre 2026</span>
+      </div>
+      <div class="calendar-weekdays">
+        <div class="weekday">Lun</div>
+        <div class="weekday">Mar</div>
+        <div class="weekday">Mié</div>
+        <div class="weekday">Jue</div>
+        <div class="weekday">Vie</div>
+        <div class="weekday">Sáb</div>
+        <div class="weekday">Dom</div>
+      </div>
+      <div class="calendar-grid">
+        <div class="calendar-day empty"></div>
+        @for (day of getCalendarDays(); track day) {
+          <div
+            class="calendar-day"
+            [class.has-event]="isPermisoDay(day)"
+            [class]="isPermisoDay(day) ? getPermisoForDay(day)?.tipo : ''"
+          >
+            <span class="day-number">{{ day }}</span>
+            @if (isPermisoDay(day) && getPermisoForDay(day)) {
+              <span class="day-event">{{ getPermisoForDay(day)!.tipo }}</span>
+            }
+          </div>
+        }
+      </div>
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <span class="legend-dot vacation"></span>
+          <span>Vacaciones</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot illness"></span>
+          <span>Incapacidad</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot permiso"></span>
+          <span>Permiso</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Solicitud' : 'Nueva Solicitud' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Empleado *</label>
+          <select [ngModel]="formEmpleado()" (ngModelChange)="formEmpleado.set($event)">
+            @for (emp of empleados(); track emp) {
+              <option [value]="emp">{{ emp }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select [ngModel]="formTipo()" (ngModelChange)="formTipo.set($event)">
+            <option value="vacacion">Vacación</option>
+            <option value="incapacidad">Incapacidad</option>
+            <option value="permiso">Permiso</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha Inicio *</label>
+            <input type="date" [ngModel]="formFechaInicio()" (ngModelChange)="formFechaInicio.set($event)" />
+            @if (errors()['fechaInicio']) {
+              <span class="error">{{ errors()['fechaInicio'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Fecha Fin *</label>
+            <input type="date" [ngModel]="formFechaFin()" (ngModelChange)="formFechaFin.set($event)" />
+            @if (errors()['fechaFin']) {
+              <span class="error">{{ errors()['fechaFin'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="dias-display">
+          <span class="dias-label">Días calculados:</span>
+          <span class="dias-value">{{ diasCalculados() }}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">{{ editingId() ? 'Guardar Cambios' : 'Crear Solicitud' }}</button>
+      </div>
+    </div>
+  </div>
+}

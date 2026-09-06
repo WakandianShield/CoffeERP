@@ -1,0 +1,324 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Gestión de Empleados</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nuevo Empleado
+    </button>
+  </div>
+
+  <div class="filters-row">
+    <div class="search-bar">
+      <span class="material-icons-outlined search-icon">search</span>
+      <input
+        type="text"
+        placeholder="Buscar empleados..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+    <div class="filter-group">
+      <select [ngModel]="filterDepartamento()" (ngModelChange)="onFilterDepto($event)">
+        <option value="">Todos los departamentos</option>
+        @for (depto of departamentos; track depto) {
+          <option [value]="depto">{{ depto }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>RFC</th>
+          <th>Puesto</th>
+          <th>Departamento</th>
+          <th>Horario</th>
+          <th>Usuario</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (emp of paginatedEmpleados(); track emp.id) {
+          <tr>
+            <td>{{ emp.id }}</td>
+            <td>{{ emp.nombreCompleto }}</td>
+            <td class="rfc-cell">{{ emp.rfc }}</td>
+            <td>{{ emp.puesto }}</td>
+            <td>{{ emp.departamento }}</td>
+            <td>{{ emp.horarioLaboral }}</td>
+            <td>
+              @if (hasUserAccount(emp.correo)) {
+                <span class="badge active">Activo</span>
+              } @else {
+                <span class="badge inactive">Sin cuenta</span>
+              }
+            </td>
+            <td>
+              <span class="badge" [class.active]="emp.activo" [class.inactive]="!emp.activo">
+                {{ emp.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon" title="Ver detalle" (click)="openDetail(emp.id)">
+                  <span class="material-icons-outlined">visibility</span>
+                </button>
+                <button class="btn-icon" title="Editar" (click)="openModal(emp.id)">
+                  <span class="material-icons-outlined">edit</span>
+                </button>
+                <button class="btn-icon" title="Gestionar Usuario" (click)="openUserModal(emp.id)">
+                  <span class="material-icons-outlined">person_add</span>
+                </button>
+                <button class="btn-icon" [class.toggle-off]="!emp.activo" title="Cambiar estatus" (click)="toggleActivo(emp.id)">
+                  <span class="material-icons-outlined">{{ emp.activo ? 'toggle_on' : 'toggle_off' }}</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9" class="empty-state">No se encontraron empleados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button class="btn-page" [disabled]="currentPage() === 1" (click)="prevPage()">
+      <span class="material-icons-outlined">chevron_left</span>
+    </button>
+    @for (page of getPageNumbers(); track page) {
+      <button class="btn-page" [class.active]="page === currentPage()" (click)="currentPage.set(page)">{{ page }}</button>
+    }
+    <button class="btn-page" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+      <span class="material-icons-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre Completo *</label>
+            <input type="text" [ngModel]="formNombre()" (ngModelChange)="formNombre.set($event)" placeholder="Ingrese el nombre completo" />
+            @if (errors()['nombre']) {
+              <span class="error">{{ errors()['nombre'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>RFC *</label>
+            <input type="text" [ngModel]="formRfc()" (ngModelChange)="formRfc.set($event)" placeholder="PEPL850101ABC" maxlength="13" />
+            @if (errors()['rfc']) {
+              <span class="error">{{ errors()['rfc'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Puesto *</label>
+            <input type="text" [ngModel]="formPuesto()" (ngModelChange)="formPuesto.set($event)" placeholder="Ej: Barista" />
+            @if (errors()['puesto']) {
+              <span class="error">{{ errors()['puesto'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Departamento *</label>
+            <select [ngModel]="formDepartamento()" (ngModelChange)="formDepartamento.set($event)">
+              @for (depto of departamentos; track depto) {
+                <option [value]="depto">{{ depto }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha de Ingreso *</label>
+            <input type="date" [ngModel]="formFechaIngreso()" (ngModelChange)="formFechaIngreso.set($event)" />
+            @if (errors()['fechaIngreso']) {
+              <span class="error">{{ errors()['fechaIngreso'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Horario Laboral *</label>
+            <select [ngModel]="formHorarioLaboral()" (ngModelChange)="formHorarioLaboral.set($event)">
+              @for (h of horarios; track h) {
+                <option [value]="h">{{ h }}</option>
+              }
+            </select>
+            @if (errors()['horario']) {
+              <span class="error">{{ errors()['horario'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono *</label>
+            <input type="text" [ngModel]="formTelefono()" (ngModelChange)="formTelefono.set($event)" maxlength="10" placeholder="10 dígitos" />
+            @if (errors()['telefono']) {
+              <span class="error">{{ errors()['telefono'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Correo *</label>
+            <input type="email" [ngModel]="formCorreo()" (ngModelChange)="formCorreo.set($event)" placeholder="correo@ejemplo.com" />
+            @if (errors()['correo']) {
+              <span class="error">{{ errors()['correo'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Salario</label>
+            <input type="number" [ngModel]="formSalario()" (ngModelChange)="formSalario.set($event)" placeholder="0.00" step="100" />
+            @if (errors()['salario']) {
+              <span class="error">{{ errors()['salario'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Estatus</label>
+            <select [ngModel]="formActivo()" (ngModelChange)="formActivo.set($event)">
+              <option [value]="true">Activo</option>
+              <option [value]="false">Inactivo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">{{ editingId() ? 'Guardar Cambios' : 'Crear Empleado' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showDetailModal() && selectedEmpleado()) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal modal-detail" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Detalle del Empleado</h2>
+        <button class="btn-close" (click)="closeDetail()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-card">
+          <div class="detail-avatar">
+            <span class="material-icons-outlined">person</span>
+          </div>
+          <h3 class="detail-name">{{ selectedEmpleado()!.nombreCompleto }}</h3>
+          <span class="detail-badge" [class.active]="selectedEmpleado()!.activo" [class.inactive]="!selectedEmpleado()!.activo">
+            {{ selectedEmpleado()!.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">ID</span>
+            <span class="detail-value">{{ selectedEmpleado()!.id }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">RFC</span>
+            <span class="detail-value rfc-cell">{{ selectedEmpleado()!.rfc }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Puesto</span>
+            <span class="detail-value">{{ selectedEmpleado()!.puesto }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Departamento</span>
+            <span class="detail-value">{{ selectedEmpleado()!.departamento }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Fecha de Ingreso</span>
+            <span class="detail-value">{{ formatDate(selectedEmpleado()!.fechaIngreso) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Horario</span>
+            <span class="detail-value">{{ selectedEmpleado()!.horarioLaboral }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Teléfono</span>
+            <span class="detail-value">{{ selectedEmpleado()!.telefono }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Correo</span>
+            <span class="detail-value">{{ selectedEmpleado()!.correo }}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="detail-label">Salario</span>
+            <span class="detail-value salary">{{ formatCurrency(selectedEmpleado()!.salario) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showUserModal() && selectedEmpleado()) {
+  <div class="modal-overlay" (click)="closeUserModal()">
+    <div class="modal modal-user" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingUserId() ? 'Actualizar Cuenta' : 'Crear Cuenta' }}</h2>
+        <button class="btn-close" (click)="closeUserModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="user-employee-info">
+          <span class="material-icons-outlined">person</span>
+          <span>{{ selectedEmpleado()!.nombreCompleto }}</span>
+        </div>
+        <div class="form-group">
+          <label>Correo Electrónico *</label>
+          <input type="email" [ngModel]="userFormEmail()" (ngModelChange)="userFormEmail.set($event)" placeholder="correo@ejemplo.com" />
+          @if (userErrors()['email']) {
+            <span class="error">{{ userErrors()['email'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>Contraseña *</label>
+          <input type="password" [ngModel]="userFormPassword()" (ngModelChange)="userFormPassword.set($event)" placeholder="Mínimo 6 caracteres" />
+          @if (userErrors()['password']) {
+            <span class="error">{{ userErrors()['password'] }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label>Roles *</label>
+          <div class="roles-grid">
+            @for (role of availableRoles; track role.id) {
+              <label class="role-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="userFormSelectedRoles().includes(role.id)"
+                  (change)="toggleRole(role.id)"
+                />
+                <span>{{ role.name }}</span>
+              </label>
+            }
+          </div>
+          @if (userErrors()['roles']) {
+            <span class="error">{{ userErrors()['roles'] }}</span>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeUserModal()">Cancelar</button>
+        <button class="btn-primary" (click)="saveUser()">{{ editingUserId() ? 'Actualizar' : 'Crear Cuenta' }}</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,115 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Registro de Pagos</h1>
+  </div>
+
+  <div class="search-bar">
+    <span class="material-icons-outlined search-icon">search</span>
+    <input
+      type="text"
+      placeholder="Buscar por cliente o producto..."
+      [value]="searchQuery()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Pedido</th>
+          <th>Cliente</th>
+          <th>Total</th>
+          <th>Método de Pago</th>
+          <th>Fecha</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (group of paginatedVentas(); track group.orderId) {
+          <tr>
+            <td>#{{ group.orderId }}</td>
+            <td>{{ group.clienteNombre }}</td>
+            <td class="currency">{{ formatCurrency(group.total) }}</td>
+            <td>
+              @if (group.metodoPago === 'efectivo') {
+                <span class="badge badge-efectivo">Efectivo</span>
+              } @else if (group.metodoPago === 'tarjeta') {
+                <span class="badge badge-tarjeta">Tarjeta</span>
+              } @else {
+                <span class="badge badge-transferencia">Transferencia</span>
+              }
+            </td>
+            <td>{{ formatDate(group.fecha) }}</td>
+            <td>
+              @if (group.estatus === 'pagada') {
+                <span class="badge badge-pagada">Pagada</span>
+              } @else if (group.estatus === 'entregada') {
+                <span class="badge badge-entregada">Entregada</span>
+              } @else {
+                <span class="badge badge-devuelta">Devuelta</span>
+              }
+            </td>
+            <td class="actions">
+              @if (group.estatus === 'pagada') {
+                <button class="btn-devolucion" (click)="openDevolucionModal(group.orderId)">
+                  Devolución
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-state">No se encontraron pagos</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn" [disabled]="currentPage() === 1" (click)="prevPage()">
+      <span class="material-icons-outlined">chevron_left</span>
+    </button>
+    <span class="page-info">Página {{ currentPage() }} de {{ totalPages() }}</span>
+    <button class="page-btn" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+      <span class="material-icons-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Registrar Devolución</h2>
+        <button class="icon-btn" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="motivo">Motivo de la devolución</label>
+          <textarea
+            id="motivo"
+            rows="4"
+            placeholder="Describa el motivo..."
+            [value]="motivo()"
+            (input)="motivo.set($any($event.target).value)"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button
+          class="btn-danger"
+          [disabled]="!motivo().trim()"
+          (click)="confirmarDevolucion()"
+        >
+          Confirmar Devolución
+        </button>
+      </div>
+    </div>
+  </div>
+}

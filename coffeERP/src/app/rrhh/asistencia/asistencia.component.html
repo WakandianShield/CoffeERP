@@ -1,0 +1,138 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Control de Asistencia</h1>
+  </div>
+
+  <div class="employee-selector">
+    <label>Seleccionar Empleado</label>
+    <select [ngModel]="selectedEmpleadoId()" (ngModelChange)="onEmpleadoChange($event)">
+      @for (emp of activeEmpleados(); track emp.id) {
+        <option [value]="emp.id">{{ emp.nombreCompleto }} - {{ emp.puesto }}</option>
+      }
+    </select>
+  </div>
+
+  @if (selectedEmpleado(); as emp) {
+    <div class="schedule-info">
+      <div class="schedule-detail">
+        <span class="material-icons-outlined">schedule</span>
+        <div>
+          <span class="schedule-label">Horario</span>
+          <span class="schedule-value">{{ emp.horarioLaboral }}</span>
+        </div>
+      </div>
+      <div class="schedule-detail">
+        <span class="material-icons-outlined">business</span>
+        <div>
+          <span class="schedule-label">Departamento</span>
+          <span class="schedule-value">{{ emp.departamento }}</span>
+        </div>
+      </div>
+      <div class="schedule-detail">
+        <span class="material-icons-outlined">work</span>
+        <div>
+          <span class="schedule-label">Puesto</span>
+          <span class="schedule-value">{{ emp.puesto }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-columns">
+      <div class="calendar-section">
+        <div class="calendar-header">
+          <button class="btn-nav" (click)="prevMonth()">
+            <span class="material-icons-outlined">chevron_left</span>
+          </button>
+          <h2>{{ calendarHeader() }}</h2>
+          <button class="btn-nav" (click)="nextMonth()">
+            <span class="material-icons-outlined">chevron_right</span>
+          </button>
+        </div>
+
+        <div class="calendar-grid">
+          @for (day of dayNames; track day) {
+            <div class="calendar-day-header">{{ day }}</div>
+          }
+          @for (day of calendarDays(); track day.date.toISOString()) {
+            <div class="calendar-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday" [class.future]="day.isFuture">
+              <span class="day-number">{{ day.dayNum }}</span>
+              @if (day.isCurrentMonth && day.asistencia) {
+                <div class="status-dot" [ngClass]="getStatusClass(day.asistencia, day.isFuture)"></div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="calendar-legend">
+          <div class="legend-item">
+            <span class="legend-dot presente"></span>
+            <span>Presente</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot retardo"></span>
+            <span>Retardo</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot falta"></span>
+            <span>Falta</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot permiso"></span>
+            <span>Permiso</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-section">
+        @if (!hasCheckedIn()) {
+          <button class="btn-checkin" (click)="registrarEntrada()">
+            <span class="material-icons-outlined">login</span>
+            Registrar Asistencia
+          </button>
+        } @else if (!hasCheckedOut()) {
+          <button class="btn-checkout" (click)="registrarSalida()">
+            <span class="material-icons-outlined">logout</span>
+            Registrar Salida
+          </button>
+        } @else {
+          <div class="checkin-done">
+            <span class="material-icons-outlined">check_circle</span>
+            Asistencia registrada para hoy
+          </div>
+        }
+
+        <div class="today-info">
+          <h3>Resumen de Hoy</h3>
+          @if (todayAsistencia(); as today) {
+            <div class="info-row">
+              <span class="info-label">Entrada</span>
+              <span class="info-value">{{ today.horaEntrada || '--:--' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Salida</span>
+              <span class="info-value">{{ today.horaSalida || '--:--' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Estado</span>
+              <span class="info-value" [ngClass]="today.estatus">{{ today.estatus | titlecase }}</span>
+            </div>
+            @if (today.minutosRetardo > 0) {
+              <div class="info-row warning">
+                <span class="info-label">Retardo</span>
+                <span class="info-value">{{ formatMinutes(today.minutosRetardo) }}</span>
+              </div>
+            }
+            @if (today.minutosSalidaAnticipada > 0) {
+              <div class="info-row warning">
+                <span class="info-label">Salida anticipada</span>
+                <span class="info-value">{{ formatMinutes(today.minutosSalidaAnticipada) }}</span>
+              </div>
+            }
+          } @else {
+            <div class="info-empty">Sin registro hoy</div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,147 @@
+<div class="productos-container">
+  <div class="header">
+    <h1>Productos</h1>
+    <button class="btn-primary" (click)="abrirModal()">Nuevo Producto</button>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar por nombre..."
+      [value]="buscar()"
+      (input)="onBuscar($event)"
+    />
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoría</th>
+          <th>Ingredientes</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of productosPaginados(); track producto.id) {
+          <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.precio | number:'1.2-2' }}</td>
+            <td>{{ producto.categoria }}</td>
+            <td>{{ producto.ingredientes.length }}</td>
+            <td>
+              <span class="estatus-badge" [class.activo]="producto.activo" [class.inactivo]="!producto.activo">
+                {{ producto.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="acciones">
+              <button class="btn-editar" (click)="abrirModal(producto)">Editar</button>
+              <button class="btn-eliminar" (click)="eliminarProducto(producto.id)">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="sin-datos">No se encontraron productos</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (totalPaginas() > 1) {
+    <div class="paginacion">
+      <button class="btn-pagina" [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">Anterior</button>
+      @for (pagina of paginas(); track pagina) {
+        <button
+          class="btn-pagina"
+          [class.activa]="paginaActual() === pagina"
+          (click)="cambiarPagina(pagina)"
+        >{{ pagina }}</button>
+      }
+      <button class="btn-pagina" [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">Siguiente</button>
+    </div>
+  }
+
+  @if (modalAbierto()) {
+    <div class="modal-overlay" (click)="cerrarModal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>{{ editando() ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+          <button class="btn-cerrar" (click)="cerrarModal()">&times;</button>
+        </div>
+        <form class="modal-form" (ngSubmit)="guardarProducto()">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" [(ngModel)]="nombreForm" name="nombre" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Precio</label>
+              <input type="number" [(ngModel)]="precioForm" name="precio" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Categoría</label>
+              <select [(ngModel)]="categoriaForm" name="categoria">
+                @for (cat of categorias; track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Estatus</label>
+              <select [(ngModel)]="activoForm" name="activo">
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ingredientes-section">
+            <h3>Ingredientes</h3>
+            <div class="ingrediente-form">
+              <select [(ngModel)]="ingredienteSeleccionado" name="ingrediente">
+                <option [ngValue]="null" disabled>Seleccionar producto</option>
+                @for (inv of productosInventario(); track inv.id) {
+                  <option [ngValue]="inv.id">{{ inv.nombre }} ({{ inv.unidadMedida }})</option>
+                }
+              </select>
+              <input
+                type="number"
+                [(ngModel)]="cantidadIngrediente"
+                name="cantidadUsada"
+                placeholder="Cantidad a usar"
+                min="0.001"
+                step="0.001"
+              />
+              <select [(ngModel)]="unidadIngrediente" name="unidadUsada">
+                @for (u of unidadesUso; track u) {
+                  <option [value]="u">{{ u }}</option>
+                }
+              </select>
+              <button type="button" class="btn-agregar" (click)="agregarIngrediente()">Agregar</button>
+            </div>
+
+            @if (ingredientesForm().length > 0) {
+              <div class="ingredientes-lista">
+                @for (ing of ingredientesForm(); track $index) {
+                  <div class="ingrediente-item">
+                    <span>{{ ing.productoInventarioNombre }} — {{ ing.cantidadUsada }} {{ ing.unidadUsada }}</span>
+                    <button type="button" class="btn-quitar" (click)="eliminarIngrediente($index)">&times;</button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

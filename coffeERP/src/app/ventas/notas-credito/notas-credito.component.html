@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="header">
+    <h1>Notas de Crédito</h1>
+    <div class="total-monto">
+      <span class="total-label">Total:</span>
+      <span class="total-value">{{ formatCurrency(totalMonto()) }}</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar por cliente o motivo..."
+      [value]="searchQuery()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  @if (paginatedNotas().length > 0) {
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Producto</th>
+            <th>Monto</th>
+            <th>Motivo</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (nota of paginatedNotas(); track nota.id) {
+            <tr>
+              <td>{{ nota.id }}</td>
+              <td>{{ nota.clienteNombre }}</td>
+              <td>{{ nota.productoNombre }}</td>
+              <td>{{ formatCurrency(nota.monto) }}</td>
+              <td>{{ nota.motivo }}</td>
+              <td>{{ formatDate(nota.fecha) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)">
+        &lt; Anterior
+      </button>
+      <span class="page-info">Página {{ currentPage() }} de {{ totalPages() }}</span>
+      <button class="page-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)">
+        Siguiente &gt;
+      </button>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h3>No hay notas de crédito</h3>
+      <p>No se encontraron registros de notas de crédito</p>
+    </div>
+  }
+</div>

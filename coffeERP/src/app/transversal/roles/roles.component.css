@@ -1,0 +1,331 @@
+.roles-container {
+  padding: 24px;
+  color: var(--text-primary, #ffffff);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary, #ffffff);
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent, #8B6F47);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover, #a0875c);
+}
+
+.btn-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  color: var(--text-secondary, #a0a0a0);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-edit:hover {
+  background: var(--accent, #8B6F47);
+  color: #fff;
+  border-color: var(--accent, #8B6F47);
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--border, #333);
+  border-radius: 6px;
+  color: var(--text-secondary, #a0a0a0);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-delete:hover {
+  background: var(--danger, #f44336);
+  color: #fff;
+  border-color: var(--danger, #f44336);
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: var(--bg-card, #212121);
+  color: var(--text-primary, #ffffff);
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-secondary, #1a1a1a);
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary, #a0a0a0);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: var(--text-primary, #ffffff);
+}
+
+.table-container {
+  background: var(--bg-card, #212121);
+  border: 1px solid var(--border, #333);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: var(--bg-secondary, #1a1a1a);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary, #a0a0a0);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border, #333);
+  color: var(--text-primary, #ffffff);
+  font-size: 14px;
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  color: var(--text-secondary, #a0a0a0);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-icon:hover {
+  background: var(--accent, #8B6F47);
+  color: #fff;
+  border-color: var(--accent, #8B6F47);
+}
+
+.btn-icon .material-icons-outlined {
+  font-size: 18px;
+}
+
+.btn-icon.btn-danger:hover {
+  background: var(--danger, #f44336);
+  border-color: var(--danger, #f44336);
+}
+
+.modules-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.module-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: rgba(139, 111, 71, 0.15);
+  color: var(--accent, #8B6F47);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-secondary, #a0a0a0);
+  padding: 32px 16px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--bg-card, #212121);
+  border: 1px solid var(--border, #333);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border, #333);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border, #333);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-secondary, #a0a0a0);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-secondary, #1a1a1a);
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  color: var(--text-primary, #ffffff);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent, #8B6F47);
+}
+
+.permissions-grid {
+  border: 1px solid var(--border, #333);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-header,
+.grid-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(4, 1fr);
+}
+
+.grid-header {
+  background: var(--bg-secondary, #1a1a1a);
+}
+
+.grid-row {
+  border-top: 1px solid var(--border, #333);
+}
+
+.grid-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cell {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-header,
+.module-name {
+  justify-content: flex-start;
+  font-weight: 500;
+}
+
+.module-name {
+  color: var(--text-primary, #ffffff);
+  font-size: 13px;
+}
+
+.action-header {
+  font-size: 11px;
+  color: var(--text-secondary, #a0a0a0);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--accent, #8B6F47);
+}

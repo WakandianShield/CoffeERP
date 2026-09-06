@@ -1,0 +1,114 @@
+<div class="pos-container">
+  <div class="products-panel">
+    <div class="panel-header">
+      <h1>Punto de Venta</h1>
+      <div class="search-bar">
+        <span class="search-icon">&#128269;</span>
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          [value]="searchQuery()"
+          (input)="onSearch($event)"
+        />
+      </div>
+    </div>
+
+    <div class="products-grid">
+      @for (producto of filteredProducts(); track producto.id) {
+        <div class="product-card">
+          <div class="card-icon">&#9749;</div>
+          <span class="card-category">{{ producto.categoria }}</span>
+          <h3 class="card-name">{{ producto.nombre }}</h3>
+          <span class="card-price">{{ formatCurrency(producto.precio) }}</span>
+          <button class="add-btn" (click)="addToCart(producto)">+</button>
+        </div>
+      } @empty {
+        <div class="empty-state">No hay productos disponibles</div>
+      }
+    </div>
+  </div>
+
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>Resumen de Venta</h2>
+      @if (cartCount() > 0) {
+        <span class="cart-badge">{{ cartCount() }}</span>
+      }
+    </div>
+
+    <div class="cart-body">
+      @if (cartItem().length === 0) {
+        <div class="cart-empty">
+          <span class="empty-icon">&#128722;</span>
+          <p>El carrito esta vacio</p>
+          <span class="empty-hint">Agrega productos con el boton +</span>
+        </div>
+      } @else {
+        <div class="cart-items">
+          @for (item of cartItem(); track item.producto.id) {
+            <div class="cart-item">
+              <div class="item-info">
+                <span class="item-name">{{ item.producto.nombre }}</span>
+                <span class="item-unit-price">{{ formatCurrency(item.producto.precio) }} c/u</span>
+              </div>
+              <div class="item-controls">
+                <div class="qty-group">
+                  <button class="qty-btn" (click)="updateCartQuantity(item.producto.id, item.cantidad - 1)">-</button>
+                  <span class="qty-value">{{ item.cantidad }}</span>
+                  <button class="qty-btn" (click)="updateCartQuantity(item.producto.id, item.cantidad + 1)">+</button>
+                </div>
+                <span class="item-subtotal">{{ formatCurrency(item.producto.precio * item.cantidad) }}</span>
+                <button class="remove-btn" (click)="removeFromCart(item.producto.id)">&#10005;</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="cart-footer">
+      <div class="client-section">
+        <label class="client-label">Nombre del Cliente</label>
+        <input
+          type="text"
+          class="client-input"
+          placeholder="Nombre del cliente..."
+          [value]="clienteNombre()"
+          (input)="onClienteNombre($event)"
+        />
+      </div>
+
+      <div class="cart-total">
+        <span class="total-label">Total</span>
+        <span class="total-value">{{ formatCurrency(cartTotal()) }}</span>
+      </div>
+
+      <div class="payment-section">
+        <span class="payment-label">Metodo de Pago</span>
+        <div class="payment-options">
+          <button
+            class="payment-btn"
+            [class.active]="paymentMethod() === 'efectivo'"
+            (click)="paymentMethod.set('efectivo')"
+          >&#128176; Efectivo</button>
+          <button
+            class="payment-btn"
+            [class.active]="paymentMethod() === 'tarjeta'"
+            (click)="paymentMethod.set('tarjeta')"
+          >&#128179; Tarjeta</button>
+          <button
+            class="payment-btn"
+            [class.active]="paymentMethod() === 'transferencia'"
+            (click)="paymentMethod.set('transferencia')"
+          >&#127974; Transferencia</button>
+        </div>
+      </div>
+
+      <button
+        class="confirm-btn"
+        [disabled]="cartItem().length === 0 || !clienteNombre().trim()"
+        (click)="confirmPayment()"
+      >Confirmar Pago</button>
+    </div>
+  </div>
+</div>

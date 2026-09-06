@@ -1,0 +1,210 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nómina</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Calcular Nómina
+    </button>
+  </div>
+
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="summary-icon total">
+        <span class="material-icons-outlined">payments</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ formatCurrency(totalNomina()) }}</span>
+        <span class="summary-label">Total Nómina</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon percepciones">
+        <span class="material-icons-outlined">trending_up</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ formatCurrency(totalPercepciones()) }}</span>
+        <span class="summary-label">Percepciones</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon deducciones">
+        <span class="material-icons-outlined">trending_down</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ formatCurrency(totalDeducciones()) }}</span>
+        <span class="summary-label">Deducciones</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon neto">
+        <span class="material-icons-outlined">account_balance_wallet</span>
+      </div>
+      <div class="summary-info">
+        <span class="summary-value">{{ formatCurrency(netoPagar()) }}</span>
+        <span class="summary-label">Neto a Pagar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Empleado</th>
+          <th>Periodo</th>
+          <th>Percepciones</th>
+          <th>Deducciones</th>
+          <th>Neto Pagar</th>
+          <th>Fecha Generación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (reg of registros(); track reg.id) {
+          <tr>
+            <td>{{ reg.id }}</td>
+            <td>{{ reg.empleado }}</td>
+            <td>{{ reg.periodo }}</td>
+            <td class="currency">{{ formatCurrency(reg.percepciones) }}</td>
+            <td class="currency">{{ formatCurrency(reg.deducciones) }}</td>
+            <td class="currency neto">{{ formatCurrency(reg.netoPagar) }}</td>
+            <td>{{ reg.fechaGeneracion }}</td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon" title="Ver recibo" (click)="openReceipt(reg.id)">
+                  <span class="material-icons-outlined">receipt</span>
+                </button>
+                <button class="btn-icon" title="Descargar PDF" (click)="downloadReceipt(reg.id)">
+                  <span class="material-icons-outlined">download</span>
+                </button>
+                <button class="btn-icon" title="Editar" (click)="openModal(reg.id)">
+                  <span class="material-icons-outlined">edit</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state">No se encontraron registros de nómina</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Nómina' : 'Calcular Nómina' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Empleado *</label>
+          <select [ngModel]="formEmpleado()" (ngModelChange)="formEmpleado.set($event)">
+            @for (emp of empleados(); track emp) {
+              <option [value]="emp">{{ emp }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Periodo *</label>
+          <input type="text" [ngModel]="formPeriodo()" (ngModelChange)="formPeriodo.set($event)" placeholder="Ej: Enero 2026" />
+          @if (errors()['periodo']) {
+            <span class="error">{{ errors()['periodo'] }}</span>
+          }
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Percepciones *</label>
+            <input type="number" [ngModel]="formPercepciones()" (ngModelChange)="formPercepciones.set($event)" placeholder="0.00" step="100" />
+            @if (errors()['percepciones']) {
+              <span class="error">{{ errors()['percepciones'] }}</span>
+            }
+          </div>
+          <div class="form-group">
+            <label>Deducciones *</label>
+            <input type="number" [ngModel]="formDeducciones()" (ngModelChange)="formDeducciones.set($event)" placeholder="0.00" step="100" />
+            @if (errors()['deducciones']) {
+              <span class="error">{{ errors()['deducciones'] }}</span>
+            }
+          </div>
+        </div>
+        <div class="calculated-neto">
+          <span class="neto-label">Neto a Pagar:</span>
+          <span class="neto-value">{{ formatCurrency(netoCalculado()) }}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">{{ editingId() ? 'Guardar Cambios' : 'Calcular' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showReceiptModal() && selectedRegistro()) {
+  <div class="modal-overlay" (click)="closeReceipt()">
+    <div class="modal modal-receipt" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Recibo de Nómina</h2>
+        <button class="btn-close" (click)="closeReceipt()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="receipt">
+          <div class="receipt-header">
+            <div class="receipt-logo">
+              <span class="material-icons-outlined">coffee</span>
+              <span>Coffee ERP</span>
+            </div>
+            <div class="receipt-title">Recibo de Nómina</div>
+          </div>
+          <div class="receipt-info">
+            <div class="receipt-row">
+              <span class="receipt-label">Empleado:</span>
+              <span class="receipt-value">{{ selectedRegistro()!.empleado }}</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">Periodo:</span>
+              <span class="receipt-value">{{ selectedRegistro()!.periodo }}</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">Fecha Generación:</span>
+              <span class="receipt-value">{{ selectedRegistro()!.fechaGeneracion }}</span>
+            </div>
+          </div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-amounts">
+            <div class="receipt-row">
+              <span class="receipt-label">Percepciones:</span>
+              <span class="receipt-value positive">{{ formatCurrency(selectedRegistro()!.percepciones) }}</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">Deducciones:</span>
+              <span class="receipt-value negative">{{ formatCurrency(selectedRegistro()!.deducciones) }}</span>
+            </div>
+          </div>
+          <div class="receipt-divider"></div>
+          <div class="receipt-total">
+            <span class="receipt-label">Neto a Pagar:</span>
+            <span class="receipt-value total">{{ formatCurrency(selectedRegistro()!.netoPagar) }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeReceipt()">Cerrar</button>
+        <button class="btn-primary" (click)="downloadReceipt(selectedRegistro()!.id)">
+          <span class="material-icons-outlined">download</span>
+          Descargar PDF
+        </button>
+      </div>
+    </div>
+  </div>
+}

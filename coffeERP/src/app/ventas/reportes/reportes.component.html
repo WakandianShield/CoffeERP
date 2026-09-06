@@ -1,0 +1,97 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Reportes de Ventas</h1>
+    <div class="date-filters">
+      <div class="date-group">
+        <label>Fecha Inicio</label>
+        <input type="date" [value]="fechaInicio()" (input)="onFechaInicio($event)" />
+      </div>
+      <div class="date-group">
+        <label>Fecha Fin</label>
+        <input type="date" [value]="fechaFin()" (input)="onFechaFin($event)" />
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-cards">
+    <div class="card card-total">
+      <span class="card-label">Total Ventas</span>
+      <span class="card-value">{{ formatCurrency(totalVentas()) }}</span>
+    </div>
+    <div class="card card-count">
+      <span class="card-label">Número de Ventas</span>
+      <span class="card-value">{{ numeroVentas() }}</span>
+    </div>
+    <div class="card card-avg">
+      <span class="card-label">Ticket Promedio</span>
+      <span class="card-value">{{ formatCurrency(ticketPromedio()) }}</span>
+    </div>
+  </div>
+
+  <div class="breakdown-section">
+    <h2>Ventas por Método de Pago</h2>
+    <div class="chart-container">
+      <div class="chart-row">
+        <span class="chart-label">Efectivo</span>
+        <div class="chart-bar-track">
+          <div class="chart-bar bar-efectivo" [style.width.%]="getBarWidth(ventasEfectivo())"></div>
+        </div>
+        <span class="chart-value">{{ formatCurrency(ventasEfectivo()) }}</span>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">Tarjeta</span>
+        <div class="chart-bar-track">
+          <div class="chart-bar bar-tarjeta" [style.width.%]="getBarWidth(ventasTarjeta())"></div>
+        </div>
+        <span class="chart-value">{{ formatCurrency(ventasTarjeta()) }}</span>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">Transferencia</span>
+        <div class="chart-bar-track">
+          <div class="chart-bar bar-transferencia" [style.width.%]="getBarWidth(ventasTransferencia())"></div>
+        </div>
+        <span class="chart-value">{{ formatCurrency(ventasTransferencia()) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <h2>Detalle de Ventas</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Productos</th>
+            <th>Total</th>
+            <th>Método de Pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (group of groupedByDate(); track group.fecha) {
+            <tr>
+              <td>{{ group.fecha }}</td>
+              <td>{{ group.ventas[0].clienteNombre }}</td>
+              <td>{{ getProducts(group.ventas) }}</td>
+              <td class="currency">{{ formatCurrency(group.total) }}</td>
+              <td>
+                @if (group.ventas[0].metodoPago === 'efectivo') {
+                  <span class="badge badge-efectivo">Efectivo</span>
+                } @else if (group.ventas[0].metodoPago === 'tarjeta') {
+                  <span class="badge badge-tarjeta">Tarjeta</span>
+                } @else {
+                  <span class="badge badge-transferencia">Transferencia</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-state">No hay ventas en el rango seleccionado</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

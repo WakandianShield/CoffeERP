@@ -1,0 +1,167 @@
+<div class="page">
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Movimientos de Inventario</h1>
+      <span class="subtitle">{{ filteredMovimientos().length }} movimientos</span>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <span class="material-icons-outlined">add</span>
+      Nuevo Movimiento
+    </button>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <span class="material-icons-outlined">search</span>
+      <input
+        type="text"
+        placeholder="Buscar..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+    </div>
+    <select
+      class="filter-select"
+      [ngModel]="filterTipo()"
+      (ngModelChange)="filterTipo.set($event)"
+    >
+      <option value="">Todos los tipos</option>
+      <option value="entrada">Entrada</option>
+      <option value="salida">Salida</option>
+    </select>
+    <div class="date-filter">
+      <label>Desde</label>
+      <input
+        type="date"
+        [ngModel]="filterFechaInicio()"
+        (ngModelChange)="filterFechaInicio.set($event)"
+      />
+    </div>
+    <div class="date-filter">
+      <label>Hasta</label>
+      <input
+        type="date"
+        [ngModel]="filterFechaFin()"
+        (ngModelChange)="filterFechaFin.set($event)"
+      />
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Producto</th>
+          <th>Almacén</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (mov of filteredMovimientos(); track mov.id) {
+          <tr>
+            <td class="id-cell">{{ mov.id }}</td>
+            <td>{{ mov.fecha }}</td>
+            <td class="name-cell">{{ mov.producto }}</td>
+            <td>{{ mov.almacen }}</td>
+            <td>
+              @if (mov.tipo === 'entrada') {
+                <span class="badge badge-success">Entrada</span>
+              } @else {
+                <span class="badge badge-danger">Salida</span>
+              }
+            </td>
+            <td [class.text-danger]="mov.tipo === 'salida'" [class.text-success]="mov.tipo === 'entrada'">
+              @if (mov.tipo === 'entrada') { + } @else { - }{{ mov.cantidad }}
+            </td>
+            <td class="actions-cell">
+              <button class="icon-btn danger" title="Eliminar" (click)="deleteMovimiento(mov.id)">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-state">No se encontraron movimientos</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Nuevo Movimiento</h2>
+        <button class="icon-btn" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <form class="modal-body" (ngSubmit)="saveMovimiento()">
+        <div class="form-group">
+          <label>Producto</label>
+          <select
+            [ngModel]="formProducto()"
+            (ngModelChange)="formProducto.set($event)"
+            name="producto"
+          >
+            @for (p of productos(); track p) {
+              <option [value]="p">{{ p }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Almacén</label>
+            <select
+              [ngModel]="formAlmacen()"
+              (ngModelChange)="formAlmacen.set($event)"
+              name="almacen"
+            >
+              @for (a of almacenes; track a) {
+                <option [value]="a">{{ a }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select
+              [ngModel]="formTipo()"
+              (ngModelChange)="formTipo.set($event)"
+              name="tipo"
+            >
+              <option value="entrada">Entrada</option>
+              <option value="salida">Salida</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input
+            type="number"
+            [ngModel]="formCantidad()"
+            (ngModelChange)="formCantidad.set($event)"
+            name="cantidad"
+            placeholder="0"
+            min="1"
+          />
+          @if (formTipo() === 'salida') {
+            <span class="stock-info">Disponible: {{ getAvailableStock() }}</span>
+          }
+        </div>
+        @if (formError()) {
+          <div class="error-message">{{ formError() }}</div>
+        }
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

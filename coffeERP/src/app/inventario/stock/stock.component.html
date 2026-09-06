@@ -1,0 +1,165 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Control de Stock</h1>
+  </div>
+
+  <div class="summary-cards">
+    <div class="card">
+      <div class="card-icon">
+        <span class="material-icons-outlined">inventory_2</span>
+      </div>
+      <div class="card-info">
+        <span class="card-value">{{ totalProductos() }}</span>
+        <span class="card-label">Total Productos</span>
+      </div>
+    </div>
+    <div class="card card-danger">
+      <div class="card-icon">
+        <span class="material-icons-outlined">trending_down</span>
+      </div>
+      <div class="card-info">
+        <span class="card-value">{{ productosBajoStock() }}</span>
+        <span class="card-label">Productos Bajo Stock</span>
+      </div>
+    </div>
+    <div class="card card-warning">
+      <div class="card-icon">
+        <span class="material-icons-outlined">trending_up</span>
+      </div>
+      <div class="card-info">
+        <span class="card-value">{{ productosSobreStock() }}</span>
+        <span class="card-label">Productos Sobre Stock</span>
+      </div>
+    </div>
+    <div class="card card-info">
+      <div class="card-icon">
+        <span class="material-icons-outlined">attach_money</span>
+      </div>
+      <div class="card-info">
+        <span class="card-value">{{ valorTotalInventario() | number }}</span>
+        <span class="card-label">Valor Total Inventario</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <span class="material-icons-outlined">search</span>
+      <input
+        type="text"
+        placeholder="Buscar producto..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+    </div>
+    <select
+      class="filter-select"
+      [ngModel]="filterEstatus()"
+      (ngModelChange)="filterEstatus.set($event)"
+    >
+      <option value="">Todos los estatus</option>
+      @for (e of estatusOptions; track e) {
+        <option [value]="e">{{ e }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Almacén</th>
+          <th>Existencia</th>
+          <th>Stock Mínimo</th>
+          <th>Stock Máximo</th>
+          <th>Punto Reorden</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of filteredItems(); track item.id) {
+          <tr>
+            <td class="name-cell">{{ item.producto }}</td>
+            <td>{{ item.almacen }}</td>
+            <td [class.low-stock]="getEstatus(item) === 'Bajo'">{{ item.existencia }}</td>
+            <td>{{ item.stockMinimo }}</td>
+            <td>{{ item.stockMaximo }}</td>
+            <td>{{ item.puntoReorden }}</td>
+            <td>
+              @if (getEstatus(item) === 'Bajo') {
+                <span class="badge badge-danger">Bajo</span>
+              } @else if (getEstatus(item) === 'Sobre') {
+                <span class="badge badge-warning">Sobre</span>
+              } @else {
+                <span class="badge badge-success">Normal</span>
+              }
+            </td>
+            <td class="actions-cell">
+              <button class="icon-btn" title="Configurar Stock" (click)="openConfigModal(item)">
+                <span class="material-icons-outlined">tune</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state">No se encontraron registros</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showConfigModal()) {
+  <div class="modal-overlay" (click)="closeConfigModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Configurar Stock - {{ configItem()?.producto }}</h2>
+        <button class="icon-btn" (click)="closeConfigModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <form class="modal-body" (ngSubmit)="saveConfig()">
+        <div class="form-group">
+          <label>Stock Mínimo</label>
+          <input
+            type="number"
+            [ngModel]="configStockMinimo()"
+            (ngModelChange)="configStockMinimo.set($event)"
+            name="configStockMinimo"
+            min="0"
+          />
+        </div>
+        <div class="form-group">
+          <label>Stock Máximo</label>
+          <input
+            type="number"
+            [ngModel]="configStockMaximo()"
+            (ngModelChange)="configStockMaximo.set($event)"
+            name="configStockMaximo"
+            min="0"
+          />
+        </div>
+        <div class="form-group">
+          <label>Punto de Reorden</label>
+          <input
+            type="number"
+            [ngModel]="configPuntoReorden()"
+            (ngModelChange)="configPuntoReorden.set($event)"
+            name="configPuntoReorden"
+            min="0"
+          />
+        </div>
+        @if (configError()) {
+          <div class="error-message">{{ configError() }}</div>
+        }
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeConfigModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

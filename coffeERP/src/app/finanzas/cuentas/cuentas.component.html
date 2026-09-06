@@ -1,0 +1,132 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Catálogo de Cuentas Contables</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <span class="material-icons-outlined">add</span>
+      Nueva Cuenta
+    </button>
+  </div>
+
+  <div class="search-bar">
+    <span class="material-icons-outlined search-icon">search</span>
+    <input
+      type="text"
+      placeholder="Buscar cuentas..."
+      [value]="searchQuery()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Saldo</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cuenta of paginatedCuentas(); track cuenta.id) {
+          <tr>
+            <td>{{ cuenta.id }}</td>
+            <td>{{ cuenta.nombre }}</td>
+            <td>
+              <span class="badge badge-{{ cuenta.tipo }}">{{ cuenta.tipo }}</span>
+            </td>
+            <td class="currency">{{ formatCurrency(cuenta.saldo) }}</td>
+            <td>
+              <span class="status-badge" [class.active]="cuenta.estatus === 'activa'" [class.inactive]="cuenta.estatus === 'inactiva'">
+                {{ cuenta.estatus }}
+              </span>
+            </td>
+            <td class="actions">
+              <button class="icon-btn" title="Editar" (click)="openModal(cuenta)">
+                <span class="material-icons-outlined">edit</span>
+              </button>
+              <button class="icon-btn" [title]="cuenta.estatus === 'activa' ? 'Desactivar' : 'Activar'" (click)="toggleEstatus(cuenta.id)">
+                <span class="material-icons-outlined">{{ cuenta.estatus === 'activa' ? 'toggle_on' : 'toggle_off' }}</span>
+              </button>
+              <button class="icon-btn danger" title="Eliminar" (click)="deleteCuenta(cuenta.id)">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No se encontraron cuentas</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn" [disabled]="currentPage() === 1" (click)="prevPage()">
+      <span class="material-icons-outlined">chevron_left</span>
+    </button>
+    <span class="page-info">Página {{ currentPage() }} de {{ totalPages() }}</span>
+    <button class="page-btn" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+      <span class="material-icons-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>
+
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h2>
+        <button class="icon-btn" (click)="closeModal()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="nombre">Nombre de la Cuenta</label>
+          <input
+            type="text"
+            id="nombre"
+            [value]="formNombre()"
+            (input)="formNombre.set($any($event.target).value)"
+            placeholder="Ingrese el nombre"
+          />
+          @if (nombreError()) {
+            <span class="error-text">{{ nombreError() }}</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="tipo">Tipo de Cuenta</label>
+          <select id="tipo" [value]="formTipo()" (change)="formTipo.set($any($event.target).value)">
+            <option value="activo">Activo</option>
+            <option value="pasivo">Pasivo</option>
+            <option value="capital">Capital</option>
+            <option value="ingreso">Ingreso</option>
+            <option value="gasto">Gasto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="saldo">Saldo Inicial</label>
+          <input
+            type="number"
+            id="saldo"
+            [value]="formSaldo()"
+            (input)="formSaldo.set(+$any($event.target).value)"
+            placeholder="0.00"
+            step="0.01"
+          />
+          @if (saldoError()) {
+            <span class="error-text">{{ saldoError() }}</span>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn-primary" (click)="save()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}
