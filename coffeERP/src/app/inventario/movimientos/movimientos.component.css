@@ -38,11 +38,14 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+  transform: translateY(-1px);
 }
 
 .btn-primary .material-icons-outlined {
@@ -51,9 +54,11 @@
 
 .btn-secondary {
   padding: 10px 18px;
-  background: var(--bg-input);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #a0a0a0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   font-size: 14px;
   font-weight: 500;
@@ -62,8 +67,8 @@
 }
 
 .btn-secondary:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  background: rgba(58, 58, 58, 0.5);
+  color: #f5f5f5;
 }
 
 .filters {
@@ -80,8 +85,10 @@
   flex: 1;
   max-width: 400px;
   padding: 0 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
 }
 
@@ -106,8 +113,10 @@
 
 .filter-select {
   padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-primary);
   font-size: 14px;
@@ -117,6 +126,7 @@
 
 .filter-select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .date-filter {
@@ -132,8 +142,10 @@
 
 .date-filter input {
   padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-primary);
   font-size: 14px;
@@ -142,13 +154,17 @@
 
 .date-filter input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .table-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 table {
@@ -157,7 +173,9 @@ table {
 }
 
 thead {
-  background: var(--bg-secondary);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 th {
@@ -168,17 +186,18 @@ th {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 td {
   padding: 14px 16px;
   font-size: 14px;
   color: var(--text-primary);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 tr:hover td {
-  background: var(--bg-hover);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .id-cell {
@@ -238,7 +257,7 @@ tr:hover td {
 }
 
 .icon-btn:hover {
-  background: var(--bg-hover);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
 }
 
@@ -261,6 +280,8 @@ tr:hover td {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,13 +289,16 @@ tr:hover td {
 }
 
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .modal-header {
@@ -282,7 +306,7 @@ tr:hover td {
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-header h2 {
@@ -312,18 +336,22 @@ tr:hover td {
 .form-group select {
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
   box-sizing: border-box;
+  transition: all 0.15s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .form-row {

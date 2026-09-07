@@ -3,10 +3,8 @@
 }
 
 .page-container {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .page-header {
@@ -35,11 +33,14 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+  transform: translateY(-1px);
 }
 
 .btn-primary .material-icons-outlined {
@@ -58,8 +59,10 @@
   align-items: center;
   gap: 16px;
   padding: 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
 }
 
@@ -113,7 +116,7 @@
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 12px;
 }
 
@@ -123,7 +126,7 @@
   gap: 8px;
   padding: 10px 20px;
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-secondary);
   font-size: 14px;
@@ -133,7 +136,7 @@
 }
 
 .tab:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
 }
 
@@ -159,13 +162,15 @@ table {
 thead th {
   text-align: left;
   padding: 12px 16px;
-  background: var(--bg-secondary);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
 
@@ -178,12 +183,12 @@ thead th:last-child {
 }
 
 tbody tr {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   transition: background 0.15s ease;
 }
 
 tbody tr:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 tbody td {
@@ -244,7 +249,7 @@ tbody td {
   width: 36px;
   height: 36px;
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-secondary);
   cursor: pointer;
@@ -252,7 +257,7 @@ tbody td {
 }
 
 .btn-icon:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--accent);
   border-color: var(--accent);
 }
@@ -280,8 +285,10 @@ tbody td {
 }
 
 .calendar {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
   padding: 24px;
 }
@@ -325,7 +332,9 @@ tbody td {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg-input);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius);
   font-size: 14px;
   color: var(--text-secondary);
@@ -371,7 +380,7 @@ tbody td {
   justify-content: center;
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .legend-item {
@@ -403,7 +412,9 @@ tbody td {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -411,13 +422,16 @@ tbody td {
 }
 
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .modal-header {
@@ -425,7 +439,7 @@ tbody td {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-header h2 {
@@ -450,7 +464,7 @@ tbody td {
 }
 
 .btn-close:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
 }
 
@@ -474,19 +488,22 @@ tbody td {
 .form-group select {
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-primary);
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .form-group select {
@@ -518,9 +535,11 @@ tbody td {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: var(--bg-secondary);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .dias-label {
@@ -540,13 +559,15 @@ tbody td {
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-secondary {
   padding: 10px 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   color: var(--text-secondary);
   font-size: 14px;
@@ -556,6 +577,6 @@ tbody td {
 }
 
 .btn-secondary:hover {
-  background: var(--bg-input);
+  background: rgba(58, 58, 58, 0.5);
   color: var(--text-primary);
 }

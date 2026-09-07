@@ -3,7 +3,7 @@
     <div class="login-header">
       <span class="material-icons-outlined logo-icon">local_cafe</span>
       <h1>CoffeERP</h1>
-      <p class="subtitle">@if (isRegisterMode()) { Crear cuenta } @else { Iniciar sesión } </p>
+      <p class="subtitle">Iniciar sesión</p>
     </div>
 
     <form class="login-form" (ngSubmit)="onSubmit()">
@@ -37,59 +37,9 @@
         @if (passwordError()) {
           <span class="error-text">{{ passwordError() }}</span>
         }
-        @if (isRegisterMode() && password()) {
-          <div class="password-validations">
-            <div class="validation-item" [class.valid]="passwordValidations().minLength">
-              <span class="material-icons-outlined">{{ passwordValidations().minLength ? 'check_circle' : 'cancel' }}</span>
-              Mínimo 8 caracteres
-            </div>
-            <div class="validation-item" [class.valid]="passwordValidations().hasUppercase">
-              <span class="material-icons-outlined">{{ passwordValidations().hasUppercase ? 'check_circle' : 'cancel' }}</span>
-              1 mayúscula
-            </div>
-            <div class="validation-item" [class.valid]="passwordValidations().hasNumber">
-              <span class="material-icons-outlined">{{ passwordValidations().hasNumber ? 'check_circle' : 'cancel' }}</span>
-              1 número
-            </div>
-            <div class="validation-item" [class.valid]="passwordValidations().hasSymbol">
-              <span class="material-icons-outlined">{{ passwordValidations().hasSymbol ? 'check_circle' : 'cancel' }}</span>
-              1 símbolo
-            </div>
-          </div>
-        }
       </div>
 
-      @if (isRegisterMode()) {
-        <div class="form-group">
-          <label for="confirmPassword">Confirmar contraseña</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            [ngModel]="confirmPassword()"
-            (ngModelChange)="onConfirmPasswordChange($event)"
-            name="confirmPassword"
-            placeholder="••••••••"
-            [class.error]="confirmPasswordError()"
-          />
-          @if (confirmPasswordError()) {
-            <span class="error-text">{{ confirmPasswordError() }}</span>
-          }
-        </div>
-      }
-
-      <button type="submit" class="btn-submit">
-        @if (isRegisterMode()) { Registrarse } @else { Iniciar sesión }
-      </button>
+      <button type="submit" class="btn-submit">Iniciar sesión</button>
     </form>
-
-    <div class="login-footer">
-      <button type="button" class="toggle-mode" (click)="toggleMode()">
-        @if (isRegisterMode()) {
-          ¿Ya tienes cuenta? <span>Iniciar sesión</span>
-        } @else {
-          ¿No tienes cuenta? <span>Registrarse</span>
-        }
-      </button>
-    </div>
   </div>
 </div>

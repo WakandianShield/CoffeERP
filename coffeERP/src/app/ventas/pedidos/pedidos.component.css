@@ -5,6 +5,13 @@
 .page-container {
   max-width: 1400px;
   margin: 0 auto;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .page-header {
@@ -29,18 +36,21 @@
 .search-bar input {
   width: 100%;
   padding: 12px 16px 12px 44px;
-  background: var(--bg-card, #212121);
-  border: 1px solid var(--border, #333);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: var(--text-primary, #ffffff);
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .search-bar input:focus {
   outline: none;
   border-color: var(--accent, #8B6F47);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .search-bar input::placeholder {
@@ -57,10 +67,13 @@
 }
 
 .table-container {
-  background: var(--bg-secondary, #1a1a1a);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  border: 1px solid var(--border, #333);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow-x: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 table {
@@ -69,7 +82,9 @@ table {
 }
 
 thead {
-  background: var(--bg-card, #212121);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 th {
@@ -80,7 +95,7 @@ th {
   color: var(--text-secondary, #a0a0a0);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border, #333);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
 
@@ -88,7 +103,7 @@ td {
   padding: 14px 16px;
   font-size: 14px;
   color: var(--text-primary, #ffffff);
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .pedido-row {
@@ -97,7 +112,7 @@ td {
 }
 
 .pedido-row:hover {
-  background: var(--bg-card, #212121);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .pedido-row:last-child td {
@@ -112,13 +127,13 @@ td {
 
 .expanded-row td {
   padding: 0;
-  border-bottom: 1px solid var(--border, #333);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .order-details {
   background: rgba(139, 111, 71, 0.05);
   padding: 16px;
-  border-top: 1px solid var(--border, #333);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .details-header {
@@ -138,13 +153,13 @@ td {
   background: transparent;
   font-size: 11px;
   padding: 8px 12px;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .items-table td {
   padding: 10px 12px;
   font-size: 13px;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .items-table tbody tr:last-child td {
@@ -152,7 +167,7 @@ td {
 }
 
 .items-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .currency {

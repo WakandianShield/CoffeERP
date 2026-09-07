@@ -1,7 +1,6 @@
 .productos-container {
-  padding: 2rem;
-  background: var(--bg-primary);
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
   color: var(--text-primary);
 }
 
@@ -28,11 +27,14 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .btn-primary:hover {
   background: #a08256;
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+  transform: translateY(-1px);
 }
 
 .search-bar {
@@ -43,17 +45,20 @@
   width: 100%;
   max-width: 400px;
   padding: 0.625rem 1rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .search-bar input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .search-bar input::placeholder {
@@ -61,10 +66,13 @@
 }
 
 .table-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 table {
@@ -73,7 +81,9 @@ table {
 }
 
 thead {
-  background: var(--bg-secondary);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 th {
@@ -84,17 +94,17 @@ th {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 td {
   padding: 0.875rem 1rem;
   font-size: 0.875rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 tbody tr:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .sin-datos {
@@ -161,12 +171,16 @@ tbody tr:hover {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-pagina {
   padding: 0.5rem 0.875rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
@@ -175,6 +189,8 @@ tbody tr:hover {
 }
 
 .btn-pagina:hover:not(:disabled) {
+  background: var(--accent-light);
+  color: var(--accent);
   border-color: var(--accent);
 }
 
@@ -186,6 +202,8 @@ tbody tr:hover {
 .btn-pagina.activa {
   background: var(--accent);
   border-color: var(--accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .modal-overlay {
@@ -195,6 +213,8 @@ tbody tr:hover {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,13 +222,16 @@ tbody tr:hover {
 }
 
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
   max-height: 85vh;
   overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .modal-header {
@@ -216,7 +239,7 @@ tbody tr:hover {
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-header h2 {
@@ -234,10 +257,11 @@ tbody tr:hover {
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .btn-cerrar:hover {
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
 }
 
@@ -261,18 +285,21 @@ tbody tr:hover {
 .form-group select {
   width: 100%;
   padding: 0.625rem 0.875rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .form-row {
@@ -284,7 +311,7 @@ tbody tr:hover {
 .ingredientes-section {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ingredientes-section h3 {
@@ -304,18 +331,21 @@ tbody tr:hover {
 .ingrediente-form select,
 .ingrediente-form input {
   padding: 0.5rem 0.75rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .ingrediente-form select:focus,
 .ingrediente-form input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .btn-agregar {
@@ -328,11 +358,14 @@ tbody tr:hover {
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .btn-agregar:hover {
   background: #a08256;
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+  transform: translateY(-1px);
 }
 
 .ingredientes-lista {
@@ -347,8 +380,10 @@ tbody tr:hover {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   font-size: 0.875rem;
   color: var(--text-primary);
@@ -375,13 +410,15 @@ tbody tr:hover {
   gap: 0.75rem;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-cancelar {
   padding: 0.625rem 1.25rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
@@ -391,5 +428,6 @@ tbody tr:hover {
 }
 
 .btn-cancelar:hover {
-  border-color: var(--text-secondary);
+  background: rgba(58, 58, 58, 0.5);
+  color: var(--text-primary);
 }

@@ -11,7 +11,7 @@
   justify-content: center;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 50%, #1a1208 100%);
+  background: transparent;
 }
 
 .hero-bg {
@@ -20,49 +20,131 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(139, 111, 71, 0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(139, 111, 71, 0.05) 0%, transparent 50%);
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(139, 111, 71, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 111, 71, 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 80%, rgba(139, 111, 71, 0.06) 0%, transparent 45%);
   pointer-events: none;
 }
 
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   text-align: center;
 }
 
-.hero-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: rgba(139, 111, 71, 0.15);
-  border: 1px solid rgba(139, 111, 71, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.hero-icon .material-icons-outlined {
-  font-size: 40px;
-  color: #8B6F47;
-}
-
-.hero h1 {
+.hero-title {
   margin: 0;
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 80px;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: -1px;
+  letter-spacing: -3px;
+  line-height: 1.05;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.hero p {
+.hero-title .accent {
+  background: linear-gradient(135deg, #8B6F47 0%, #c8a87c 50%, #8B6F47 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+}
+
+.hero-subtitle {
   margin: 0;
-  font-size: 18px;
-  color: #a0a0a0;
+  font-size: 22px;
+  color: rgba(160, 160, 160, 0.9);
   font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.hero-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #8B6F47, transparent);
+  border-radius: 2px;
+  margin: 4px 0;
+}
+
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: -80px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(139, 111, 71, 0.08) 0%, transparent 70%);
+  animation: drift 20s ease-in-out infinite;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  bottom: -40px;
+  left: -40px;
+  background: radial-gradient(circle, rgba(139, 111, 71, 0.06) 0%, transparent 70%);
+  animation: drift 15s ease-in-out infinite reverse;
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  top: 20%;
+  left: 15%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  animation: drift 25s ease-in-out infinite;
+}
+
+.shape-4 {
+  width: 100px;
+  height: 100px;
+  bottom: 25%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(139, 111, 71, 0.05) 0%, transparent 70%);
+  animation: drift 18s ease-in-out infinite reverse;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(15px, -20px) scale(1.05); }
+  50% { transform: translate(-10px, 15px) scale(0.95); }
+  75% { transform: translate(20px, 10px) scale(1.02); }
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.03;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(8, 8, 8, 0.5) 100%);
+  pointer-events: none;
 }

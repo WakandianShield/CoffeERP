@@ -24,17 +24,20 @@
 }
 
 .products-panel {
-  background: var(--bg-primary);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .panel-header {
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,18 +61,21 @@
 .search-bar input {
   width: 100%;
   padding: 10px 14px 10px 40px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .search-bar input:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .search-bar input::placeholder {
@@ -96,8 +102,10 @@
 }
 
 .product-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   padding: 0;
   display: flex;
@@ -117,8 +125,10 @@
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .card-category {
@@ -171,17 +181,20 @@
 }
 
 .cart-panel {
-  background: var(--bg-primary);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .cart-header {
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -243,8 +256,10 @@
 }
 
 .cart-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   display: flex;
@@ -279,7 +294,7 @@
   display: flex;
   align-items: center;
   gap: 0;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
@@ -290,7 +305,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-surface);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: none;
   color: var(--text-primary);
   font-size: 16px;
@@ -300,7 +317,7 @@
 }
 
 .qty-btn:hover {
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .qty-value {
@@ -309,9 +326,11 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-  background: var(--bg-card);
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   line-height: 30px;
 }
 
@@ -346,7 +365,7 @@
 
 .cart-footer {
   padding: 16px 20px 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -369,18 +388,21 @@
 .client-input {
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .client-input:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .client-input::placeholder {
@@ -392,7 +414,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  background: var(--bg-card);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
 }
 
@@ -431,8 +456,10 @@
 
 .payment-btn {
   padding: 10px 6px;
-  background: var(--bg-card);
-  border: 2px solid var(--border);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
   font-size: 12px;
@@ -461,11 +488,14 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .confirm-btn:hover:not(:disabled) {
   background: var(--accent-hover);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+  transform: translateY(-1px);
 }
 
 .confirm-btn:disabled {

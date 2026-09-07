@@ -5,6 +5,13 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .page-header {
@@ -29,18 +36,21 @@
 .search-bar input {
   width: 100%;
   padding: 12px 16px 12px 44px;
-  background: var(--bg-card, #212121);
-  border: 1px solid var(--border, #333);
+  background: rgba(33, 33, 33, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: var(--text-primary, #ffffff);
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .search-bar input:focus {
   outline: none;
   border-color: var(--accent, #8B6F47);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .search-bar input::placeholder {
@@ -57,10 +67,13 @@
 }
 
 .table-container {
-  background: var(--bg-card, #212121);
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  border: 1px solid var(--border, #333);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 table {
@@ -69,7 +82,9 @@ table {
 }
 
 thead {
-  background: var(--bg-primary, #0d0d0d);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 th {
@@ -80,18 +95,18 @@ th {
   color: var(--text-secondary, #a0a0a0);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border, #333);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 td {
   padding: 14px 16px;
   font-size: 14px;
   color: var(--text-primary, #ffffff);
-  border-bottom: 1px solid var(--border, #333);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 tbody tr:hover {
-  background: var(--bg-secondary, #1a1a1a);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 tbody tr:last-child td {
@@ -178,8 +193,8 @@ tbody tr:last-child td {
 }
 
 .icon-btn:hover {
-  background: var(--border, #333);
-  color: var(--text-primary, #ffffff);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent, #8B6F47);
 }
 
 .icon-btn .material-icons-outlined {
@@ -198,6 +213,8 @@ tbody tr:last-child td {
   justify-content: center;
   gap: 16px;
   margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .page-btn {
@@ -206,8 +223,10 @@ tbody tr:last-child td {
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: var(--bg-card, #212121);
-  border: 1px solid var(--border, #333);
+  background: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: var(--text-primary, #ffffff);
   cursor: pointer;
@@ -215,13 +234,21 @@ tbody tr:last-child td {
 }
 
 .page-btn:hover:not(:disabled) {
-  background: var(--bg-secondary, #1a1a1a);
+  background: var(--accent-light, rgba(200, 168, 124, 0.15));
+  color: var(--accent, #8B6F47);
   border-color: var(--accent, #8B6F47);
 }
 
 .page-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.page-btn.active {
+  background: var(--accent, #8B6F47);
+  color: white;
+  border-color: var(--accent, #8B6F47);
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
 }
 
 .page-btn .material-icons-outlined {
@@ -237,6 +264,8 @@ tbody tr:last-child td {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,13 +273,16 @@ tbody tr:last-child td {
 }
 
 .modal {
-  background: var(--bg-secondary, #1a1a1a);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   border-radius: 12px;
-  border: 1px solid var(--border, #333);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .modal-header {
@@ -258,7 +290,7 @@ tbody tr:last-child td {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border, #333);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-header h2 {
@@ -291,20 +323,23 @@ tbody tr:last-child td {
 .form-group textarea {
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-card, #212121);
-  border: 1px solid var(--border, #333);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: var(--text-primary, #ffffff);
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
   box-sizing: border-box;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .form-group textarea:focus {
   outline: none;
   border-color: var(--accent, #8B6F47);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .form-group textarea::placeholder {
@@ -316,14 +351,16 @@ tbody tr:last-child td {
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid var(--border, #333);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-secondary {
   padding: 10px 20px;
-  background: var(--bg-card, #212121);
-  color: var(--text-secondary, #a0a0a0);
-  border: 1px solid var(--border, #333);
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #a0a0a0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
@@ -332,8 +369,8 @@ tbody tr:last-child td {
 }
 
 .btn-secondary:hover {
-  background: var(--border, #333);
-  color: var(--text-primary, #ffffff);
+  background: rgba(58, 58, 58, 0.5);
+  color: #f5f5f5;
 }
 
 .btn-danger {

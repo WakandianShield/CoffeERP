@@ -33,7 +33,7 @@
   padding: 10px 20px;
   background: transparent;
   color: #a0a0a0;
-  border: 1px solid #3a3a3a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
@@ -55,9 +55,11 @@
   gap: 16px;
   margin-bottom: 24px;
   padding: 20px;
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  border: 1px solid #3a3a3a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .filter-group {
@@ -76,17 +78,20 @@
 
 .filter-group input {
   padding: 10px 14px;
-  background: #2c2c2c;
-  border: 1px solid #3a3a3a;
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: #f5f5f5;
   font-size: 14px;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .filter-group input:focus {
   outline: none;
   border-color: #8B6F47;
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
 }
 
 .filter-group input::-webkit-calendar-picker-indicator {
@@ -94,9 +99,11 @@
 }
 
 .section-card {
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  border: 1px solid #3a3a3a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 24px;
   overflow: hidden;
 }
@@ -106,7 +113,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .section-header h2 {
@@ -119,9 +126,12 @@
 .period-badge {
   font-size: 13px;
   color: #a0a0a0;
-  background: #2c2c2c;
+  background: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 6px 12px;
   border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .balance-grid {
@@ -135,7 +145,7 @@
 }
 
 .balance-column:first-child {
-  border-right: 1px solid #3a3a3a;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .column-header {
@@ -169,14 +179,14 @@ thead th {
   color: #6b6b6b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 td {
   padding: 12px 24px;
   font-size: 14px;
   color: #f5f5f5;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 tbody tr:last-child td {
@@ -198,7 +208,9 @@ tbody tr:last-child td {
 }
 
 .total-row {
-  background: #212121;
+  background: rgba(33, 33, 33, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   font-weight: 600;
 }
 
@@ -210,14 +222,14 @@ tbody tr:last-child td {
 }
 
 .subtotal-row td {
-  border-bottom: 1px solid #3a3a3a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-weight: 600;
   color: #a0a0a0;
 }
 
 .separator-row td {
   padding: 4px 24px;
-  border-bottom: 1px dashed #3a3a3a;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
   background: rgba(139, 111, 71, 0.05);
 }
 
@@ -255,6 +267,6 @@ tbody tr:last-child td {
 
   .balance-column:first-child {
     border-right: none;
-    border-bottom: 1px solid #3a3a3a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
