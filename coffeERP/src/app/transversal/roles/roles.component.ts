@@ -1,3 +1,4 @@
+// ESTE COMPONENTE MUESTRA Y ADMINISTRA LOS ROLES DEL SISTEMA.
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

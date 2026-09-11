@@ -1,3 +1,4 @@
+// ESTE COMPONENTE MUESTRA LOS ESTADOS FINANCIEROS DEL NEGOCIO.
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

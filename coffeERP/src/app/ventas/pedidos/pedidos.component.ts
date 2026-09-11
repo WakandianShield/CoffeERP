@@ -1,3 +1,4 @@
+// ESTE COMPONENTE MUESTRA Y ADMINISTRA LOS PEDIDOS DE LOS CLIENTES.
 import { Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Venta } from '../../shared/models';

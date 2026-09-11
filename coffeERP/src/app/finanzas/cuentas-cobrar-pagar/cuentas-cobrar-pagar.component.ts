@@ -1,3 +1,4 @@
+// ESTE COMPONENTE CONTROLA LAS CUENTAS POR COBRAR Y POR PAGAR.
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

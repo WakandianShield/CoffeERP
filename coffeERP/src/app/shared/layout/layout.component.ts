@@ -1,3 +1,4 @@
+// ESTE COMPONENTE CONTROLA EL MENU Y LA ESTRUCTURA PRINCIPAL DEL SISTEMA.
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';

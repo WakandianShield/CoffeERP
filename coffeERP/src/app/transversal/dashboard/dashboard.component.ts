@@ -1,3 +1,4 @@
+// ESTE COMPONENTE PRESENTA LA PANTALLA PRINCIPAL DEL SISTEMA.
 import { Component } from '@angular/core';
 
 @Component({

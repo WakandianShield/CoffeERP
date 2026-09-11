@@ -1,3 +1,4 @@
+// ESTE COMPONENTE MUESTRA Y ADMINISTRA LA NOMINA DEL PERSONAL.
 import { Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

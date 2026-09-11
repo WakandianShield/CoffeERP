@@ -1,3 +1,4 @@
+// ESTE COMPONENTE CONTROLA LA VENTA Y EL CARRITO DE PRODUCTOS.
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +12,7 @@ import { ProductoVenta, Venta } from '../../shared/models';
   styleUrl: './venta.component.css'
 })
 export class VentaComponent {
+  // AQUI SE GUARDAN LOS PRODUCTOS, EL CLIENTE Y EL PAGO ACTUAL.
   productosVenta = signal<ProductoVenta[]>([]);
 
   ventas = signal<Venta[]>([]);
@@ -28,6 +30,7 @@ export class VentaComponent {
     )
   );
 
+  // ESTOS VALORES SE USAN PARA MOSTRAR LOS TOTALES DE LA VENTA.
   cartTotal = computed(() =>
     this.cartItem().reduce((sum, i) => sum + i.producto.precio * i.cantidad, 0)
   );
@@ -81,6 +84,7 @@ export class VentaComponent {
   }
 
   confirmPayment() {
+    // ANTES DE GUARDAR, SE REVISA QUE HAYA CLIENTE Y PRODUCTOS.
     const nombre = this.clienteNombre().trim();
     if (!nombre) {
       alert('Ingrese el nombre del cliente');

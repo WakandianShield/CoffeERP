@@ -1,3 +1,4 @@
+// ESTE COMPONENTE CONTROLA EL FORMULARIO DE INICIO DE SESION.
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 

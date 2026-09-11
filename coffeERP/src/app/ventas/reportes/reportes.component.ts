@@ -1,3 +1,4 @@
+// ESTE COMPONENTE MUESTRA LOS REPORTES DE LAS VENTAS.
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
