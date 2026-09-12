@@ -41,6 +41,8 @@
       </div>
 
       <button type="submit" class="btn-submit">Iniciar sesión</button>
+      @if (mensajeError()) { <span class="error-text">{{ mensajeError() }}</span> }
+      <a routerLink="/registro">Crear una cuenta</a>
     </form>
   </div>
 </div>

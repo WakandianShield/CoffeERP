@@ -48,6 +48,9 @@
             <span class="user-email">{{ currentUser()!.email }}</span>
             <span class="user-role">{{ currentUser()!.roles[0]?.name || 'Sin rol' }}</span>
           </div>
+          <button class="btn-logout" title="Cerrar sesion" (click)="cerrarSesion()">
+            <span class="material-icons-outlined">logout</span>
+          </button>
         </div>
       } @else {
         <button class="login-btn" routerLink="/login">

@@ -17,7 +17,11 @@
     <div class="products-grid">
       @for (producto of filteredProducts(); track producto.id) {
         <div class="product-card">
-          <div class="card-icon">&#9749;</div>
+          @if (producto.imagen) {
+            <img class="card-icon" [src]="producto.imagen" [alt]="producto.nombre" />
+          } @else {
+            <div class="card-icon">&#9749;</div>
+          }
           <span class="card-category">{{ producto.categoria }}</span>
           <h3 class="card-name">{{ producto.nombre }}</h3>
           <span class="card-price">{{ formatCurrency(producto.precio) }}</span>

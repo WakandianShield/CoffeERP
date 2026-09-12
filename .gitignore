@@ -1,0 +1,27 @@
+# DEPENDENCIAS
+node_modules/
+
+# ARCHIVOS DE DEPURACION
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ARCHIVOS DEL SISTEMA Y DEL EDITOR
+.DS_Store
+Thumbs.db
+.idea/
+.history/
+
+# ARCHIVOS GENERADOS POR ANGULAR
+coffeERP/.angular/
+coffeERP/dist/
+coffeERP/coverage/
+
+# ARCHIVOS GENERADOS POR EL BACKEND
+back-erp/uploads/*
+!back-erp/uploads/.gitkeep
+
+# ARCHIVOS LOCALES Y CREDENCIALES
+.env
+.env.*
+!.env.example

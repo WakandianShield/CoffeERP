@@ -1,8 +1,9 @@
 // ESTE COMPONENTE CONTROLA LA VENTA Y EL CARRITO DE PRODUCTOS.
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductoVenta, Venta } from '../../shared/models';
+import { ProductoService } from '../../shared/services/producto.service';
 
 @Component({
   selector: 'app-venta',
@@ -11,7 +12,8 @@ import { ProductoVenta, Venta } from '../../shared/models';
   templateUrl: './venta.component.html',
   styleUrl: './venta.component.css'
 })
-export class VentaComponent {
+export class VentaComponent implements OnInit {
+  // ESTA LISTA CONTIENE LOS PRODUCTOS QUE SE MUESTRAN EN EL PUNTO DE VENTA.
   // AQUI SE GUARDAN LOS PRODUCTOS, EL CLIENTE Y EL PAGO ACTUAL.
   productosVenta = signal<ProductoVenta[]>([]);
 
@@ -23,6 +25,16 @@ export class VentaComponent {
   searchQuery = signal('');
   clienteNombre = signal('');
   orderIdCounter = signal(1);
+
+  constructor(private readonly productoService: ProductoService) {}
+
+  // ESTA FUNCION CARGA LOS PRODUCTOS DESDE LA API.
+  ngOnInit(): void {
+    this.productoService.obtenerProductos().subscribe({
+      next: datos => this.productosVenta.set(datos),
+      error: error => console.error('Error al obtener productos:', error)
+    });
+  }
 
   filteredProducts = computed(() =>
     this.productosVenta().filter(p =>

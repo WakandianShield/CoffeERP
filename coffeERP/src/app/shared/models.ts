@@ -1,4 +1,5 @@
 export interface User {
+  // ESTE MODELO REPRESENTA LOS DATOS BASICOS DEL USUARIO.
   id: number;
   email: string;
   password?: string;
@@ -202,12 +203,14 @@ export interface IngredienteProducto {
 }
 
 export interface ProductoVenta {
+  // ESTE MODELO REPRESENTA LOS PRODUCTOS QUE APARECEN EN EL PUNTO DE VENTA.
   id: number;
   nombre: string;
   precio: number;
   categoria: string;
   activo: boolean;
   ingredientes: IngredienteProducto[];
+  imagen: string | null;
 }
 
 export interface Venta {

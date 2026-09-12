@@ -3,6 +3,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { User } from '../models';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-layout',
@@ -14,6 +15,10 @@ import { User } from '../models';
 export class LayoutComponent {
   sidebarOpen = signal(false);
   currentUser = signal<User | null>(null);
+
+  constructor(private readonly usuarioService: UsuarioService) {
+    this.currentUser = usuarioService.usuarioActual;
+  }
 
   navGroups = signal([
     {
@@ -105,5 +110,10 @@ export class LayoutComponent {
 
   closeSidebar(): void {
     this.sidebarOpen.set(false);
+  }
+
+  // ESTA FUNCION CIERRA LA SESION DEL USUARIO ACTUAL.
+  cerrarSesion(): void {
+    this.usuarioService.cerrarSesion();
   }
 }

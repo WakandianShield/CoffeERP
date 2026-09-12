@@ -39,5 +39,6 @@ export const routes: Routes = [
     ]
   },
   { path: 'login', loadComponent: () => import('./transversal/login/login.component').then(m => m.LoginComponent) },
+  { path: 'registro', loadComponent: () => import('./transversal/registro/registro.component').then(m => m.RegistroComponent) },
   { path: '**', redirectTo: 'dashboard' }
 ];
