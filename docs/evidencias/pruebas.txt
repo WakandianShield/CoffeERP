@@ -1,0 +1,26 @@
+
+> coffe-erp-api@2.0.0 test
+> node --test test/*.test.js
+
+▶ Integración SQL + HTTP: seguridad, compras, ventas, inventario, nómina, PayPal y correo
+  ✔ 401 sin sesión, contraseña incorrecta y JWT vencido (111.880703ms)
+  ✔ Cajero no puede administrar ni consultar finanzas (1106.182803ms)
+  ✔ Compra actualiza existencias y registra egreso atómicamente (53.924783ms)
+  ✔ Venta usa precio de BD, no del cliente; factura disponible pese a correo sin configurar (45.128708ms)
+  ✔ Nómina única por empleado y mes, con egreso (31.783552ms)
+  ✔ Correo: error visible, reintento y adjunto XML base64 (15.70953ms)
+Error interno: Error
+  ✔ PayPal: persiste reserva, conserva revisión si se pierde respuesta y recupera sin doble cobro (90.829557ms)
+✔ Integración SQL + HTTP: seguridad, compras, ventas, inventario, nómina, PayPal y correo (1594.551902ms)
+✔ Carrito: rechaza vacíos, cantidades fraccionarias y productos repetidos (3.960645ms)
+✔ Importes, correo y contraseña se validan en servidor (0.896348ms)
+✔ PayPal: rechaza moneda, importe, identidad o estado incorrectos (1.776727ms)
+✔ Factura XML escapa texto y conserva precios históricos (2.087286ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2289.85243

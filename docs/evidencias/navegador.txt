@@ -1,0 +1,3 @@
+Prueba de navegador Chromium: login, carrito, venta en efectivo persistida, navegación por cinco módulos, cierre de sesión, guard de rol y vista móvil de 390px.
+Sin errores JavaScript ni desbordamiento horizontal.
+Datos ficticios; PayPal y Brevo sin credenciales externas.

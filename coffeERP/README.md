@@ -1,59 +1,51 @@
-# CoffeERP
+# Frontend Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.23.
+Aplicación SPA privada con componentes standalone. Se retiró SSR porque este ERP requiere autenticación y el SDK de PayPal necesita el navegador. No hay datos empresariales persistidos en localStorage: los formularios consultan Express y MySQL.
 
-## Development server
+## Organización
 
-To start a local development server, run:
+| Archivo o carpeta                | Responsabilidad                                          |
+| -------------------------------- | -------------------------------------------------------- |
+| `src/main.ts`                    | Arrancar Angular                                         |
+| `src/app/app.config.ts`          | Registrar router, HttpClient e interceptor               |
+| `src/app/app.routes.ts`          | Login, cinco módulos y guards                            |
+| `src/app/shell.ts`               | Navegación común, usuario y cierre de sesión             |
+| `src/app/login.ts`               | Formulario de acceso                                     |
+| `src/app/core/models.ts`         | Interfaces de los contratos HTTP                         |
+| `src/app/core/auth.service.ts`   | Iniciar/restaurar sesión y conservar JWT por pestaña     |
+| `src/app/core/security.ts`       | Añadir JWT solo a `/api`, gestionar 401 y proteger rutas |
+| `src/app/core/api.service.ts`    | Centralizar GET, POST, PUT y descarga XML                |
+| `src/app/core/paypal.service.ts` | Cargar SDK v6 y preparar sesión de pago                  |
+| `src/app/core/page.ts`           | Estado de carga, mensajes y formato de moneda            |
+| `src/app/pages/`                 | Una pantalla por módulo                                  |
+| `proxy.conf.json`                | Redirigir `/api` a `127.0.0.1:3200` durante desarrollo   |
 
-```bash
-ng serve
-```
+## Recorrido de una acción
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. El usuario completa un formulario con validación Angular.
+2. El componente transforma pesos a centavos y llama a `ApiService`.
+3. El interceptor adjunta el JWT. El backend vuelve a validar todo.
+4. Tras la respuesta, el componente recarga los registros del servidor.
+5. Las señales (`signal`) actualizan las tablas, mensajes y botones.
 
-## Code scaffolding
+Los imports y clases están comentados donde hay decisiones de seguridad, pagos o arquitectura. Los modelos no se mezclan con el servicio de PayPal. Las plantillas están junto al componente para facilitar la lectura de estas cinco pantallas pequeñas.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## PayPal
 
-```bash
-ng generate component component-name
-```
+`PaypalService.setup()` solicita el Client ID público al backend, carga el script y crea una sesión. El botón queda deshabilitado si faltan credenciales. Un clic llama a `session.start()` y pasa una promesa de creación de orden. `onApprove` solicita la captura al backend. El navegador **no decide** que una venta está pagada.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Un cierre de ventana conserva la reserva hasta que el usuario la cancele o verifique desde el historial. Si desaparece la pestaña después del cobro, el historial persistido permite recuperar el estado al iniciar sesión de nuevo.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Comandos
 
 ```bash
-ng test
+npm ci
+npm start
+npm run build
 ```
 
-## Running end-to-end tests
+`dist/coffeERP/browser` contiene la compilación. Un hosting necesita fallback de rutas a `index.html` y proxy `/api` al backend. El código está preparado para ejecución local, sin despliegue incluido.
 
-For end-to-end (e2e) testing, run:
+## Criterios visuales
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Navegación única, tonos café y verde, formularios con etiquetas visibles, tablas desplazables y adaptación a 390px. Los botones bloquean envíos mientras hay una operación en curso. Los errores del servidor se presentan junto al formulario.
